@@ -54,4 +54,11 @@
 
   window.LoEntregoTheme = { set: setTheme, get: getPref };
   apply();
+
+  // Oculta la app un instante mientras arrancan las animaciones de entrada
+  // (Scripts-motion.js quita la clase). Respaldo por si algo falla.
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    root.classList.add('anim-pending');
+    setTimeout(() => root.classList.remove('anim-pending'), 1500);
+  }
 })();

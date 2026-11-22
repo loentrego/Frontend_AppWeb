@@ -17,6 +17,12 @@
     btn: document.getElementById('login-btn'),
   };
 
+  // Navega con la transición de salida (si las animaciones están activas)
+  function go(url) {
+    const leave = window.LoEntregoMotion?.leave;
+    Promise.resolve(leave ? leave() : null).finally(() => { window.location.href = url; });
+  }
+
   // ---------- Vista ----------
   function setLoginError(msg) {
     if (ui.error) ui.error.textContent = msg || '';
@@ -74,7 +80,7 @@
 
     if (usuario === DEMO_LOGIN.usuario && password === DEMO_LOGIN.password) {
       localStorage.setItem('auth_token', 'demo');
-      window.location.href = `Pages/Pages-${DEMO_LOGIN.rol}.html`;
+      go(`Pages/Pages-${DEMO_LOGIN.rol}.html`);
       return;
     }
 
@@ -89,7 +95,7 @@
 
       if (respuesta.ok && datos.rol) {
         if (datos.token) localStorage.setItem('auth_token', datos.token);
-        window.location.href = `Pages/Pages-${datos.rol.toLowerCase()}.html`;
+        go(`Pages/Pages-${datos.rol.toLowerCase()}.html`);
       } else {
         setLoginError(datos.mensaje || 'Usuario o contraseña incorrectos');
         shakeForm();

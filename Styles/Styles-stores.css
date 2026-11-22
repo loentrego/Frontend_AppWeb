@@ -137,7 +137,6 @@
   margin-top: -26px;
   padding: var(--space-lg) var(--space-md) var(--space-2xl);
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-  background: var(--bg-page);
 }
 
 .card {

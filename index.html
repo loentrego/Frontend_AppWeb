@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="Styles/Styles-base.css?v=20261122g">
-<link rel="stylesheet" href="Styles/Styles-index.css?v=20261122g">
+<link rel="stylesheet" href="Styles/Styles-base.css?v=20261122h">
+<link rel="stylesheet" href="Styles/Styles-index.css?v=20261122h">
 <link rel="icon" href="img/Minilogo-transparencia.png">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="LoEntrego">
-<script src="Scripts/Scripts-theme.js?v=20261122g"></script>
+<script src="Scripts/Scripts-theme.js?v=20261122h"></script>
 </head>
 <body>
 
@@ -26,10 +26,19 @@
   <!-- ============ ZONA DE MARCA ============ -->
   <section class="brand-zone login-hero" aria-labelledby="login-title">
     <svg class="route-art" viewBox="0 0 390 380" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <path class="route-line" d="M-10 330 C 70 330, 90 250, 170 250 S 270 300, 300 210 S 330 90, 410 70"/>
+      <defs>
+        <mask id="login-route-reveal" maskUnits="userSpaceOnUse">
+          <path class="route-mask" d="M-10 330 C 70 330, 90 250, 170 250 S 270 300, 300 210 S 330 90, 410 70" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round"/>
+        </mask>
+      </defs>
+      <path id="login-route-path" class="route-line" d="M-10 330 C 70 330, 90 250, 170 250 S 270 300, 300 210 S 330 90, 410 70" mask="url(#login-route-reveal)"/>
       <circle class="route-stop" cx="170" cy="250" r="6"/>
       <circle class="route-halo" cx="300" cy="210" r="14"/>
       <circle class="route-dot" cx="300" cy="210" r="6"/>
+      <g class="route-courier">
+        <circle class="courier-glow" r="11"/>
+        <rect class="courier-box" x="-5" y="-5" width="10" height="10" rx="2.5"/>
+      </g>
     </svg>
 
     <img class="login-logo" src="img/LoEntrego2026-wordmark.png" alt="LoEntrego — Logística de última milla" width="1383" height="374">
@@ -81,7 +90,13 @@
 
 </main>
 
-<script src="Scripts/Scripts-index.js?v=20261122g"></script>
-<script src="Scripts/Scripts-pwa.js?v=20261122g"></script>
+<script src="Scripts/Scripts-index.js?v=20261122h"></script>
+<script src="libs/gsap/gsap.min.js"></script>
+<script src="libs/gsap/ScrollTrigger.min.js"></script>
+<script src="libs/gsap/SplitText.min.js"></script>
+<script src="libs/gsap/DrawSVGPlugin.min.js"></script>
+<script src="libs/gsap/MotionPathPlugin.min.js"></script>
+<script src="Scripts/Scripts-motion.js?v=20261122h"></script>
+<script src="Scripts/Scripts-pwa.js?v=20261122h"></script>
 </body>
 </html>

@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../Styles/Styles-base.css?v=20261122g">
-<link rel="stylesheet" href="../Styles/Styles-stores.css?v=20261122g">
+<link rel="stylesheet" href="../Styles/Styles-base.css?v=20261122h">
+<link rel="stylesheet" href="../Styles/Styles-stores.css?v=20261122h">
 <link rel="icon" href="../img/Minilogo-transparencia.png">
 <link rel="manifest" href="../manifest.webmanifest">
 <link rel="apple-touch-icon" href="../img/icons/apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="LoEntrego">
-<script src="../Scripts/Scripts-theme.js?v=20261122g"></script>
+<script src="../Scripts/Scripts-theme.js?v=20261122h"></script>
 </head>
 <body>
 
@@ -28,10 +28,19 @@
     <!-- ============ ZONA DE MARCA: ENCABEZADO + RESUMEN ============ -->
     <section class="brand-zone app-hero" aria-label="Resumen de hoy">
       <svg class="route-art" viewBox="0 0 390 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <path class="route-line" d="M-10 210 C 80 210, 110 150, 190 160 S 300 120, 330 60 S 380 10, 410 20"/>
-        <circle class="route-halo" cx="330" cy="60" r="12"/>
-        <circle class="route-dot" cx="330" cy="60" r="5"/>
-      </svg>
+      <defs>
+        <mask id="app-route-reveal" maskUnits="userSpaceOnUse">
+          <path class="route-mask" d="M-10 210 C 80 210, 110 150, 190 160 S 300 120, 330 60 S 380 10, 410 20" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round"/>
+        </mask>
+      </defs>
+      <path id="app-route-path" class="route-line" d="M-10 210 C 80 210, 110 150, 190 160 S 300 120, 330 60 S 380 10, 410 20" mask="url(#app-route-reveal)"/>
+      <circle class="route-halo" cx="330" cy="60" r="12"/>
+      <circle class="route-dot" cx="330" cy="60" r="5"/>
+      <g class="route-courier">
+        <circle class="courier-glow" r="11"/>
+        <rect class="courier-box" x="-5" y="-5" width="10" height="10" rx="2.5"/>
+      </g>
+    </svg>
 
       <header class="app-header">
         <div class="app-header-brand">
@@ -231,7 +240,13 @@
   <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
 </div>
 
-<script src="../Scripts/Scripts-stores.js?v=20261122g"></script>
-<script src="../Scripts/Scripts-pwa.js?v=20261122g"></script>
+<script src="../Scripts/Scripts-stores.js?v=20261122h"></script>
+<script src="../libs/gsap/gsap.min.js"></script>
+<script src="../libs/gsap/ScrollTrigger.min.js"></script>
+<script src="../libs/gsap/SplitText.min.js"></script>
+<script src="../libs/gsap/DrawSVGPlugin.min.js"></script>
+<script src="../libs/gsap/MotionPathPlugin.min.js"></script>
+<script src="../Scripts/Scripts-motion.js?v=20261122h"></script>
+<script src="../Scripts/Scripts-pwa.js?v=20261122h"></script>
 </body>
 </html>

@@ -22,10 +22,8 @@
 .login-logo {
   width: 136px;
   height: auto;
-  animation: rise var(--dur-med) var(--ease) both;
 }
 
-.login-copy { animation: rise var(--dur-med) var(--ease) 0.06s both; }
 .login-copy h1 {
   font-family: var(--font-display);
   font-size: var(--fs-hero);
@@ -44,8 +42,6 @@
   margin-top: -28px;
   padding: var(--space-xl) var(--space-lg) var(--space-md);
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-  background: var(--bg-page);
-  animation: panel-up 0.5s var(--ease) both;
 }
 .login-panel::before {
   /* Pestaña lima: el "punto de entrega" de la ruta */
@@ -119,8 +115,6 @@
 }
 .login-foot img { width: 18px; height: 18px; border-radius: 5px; }
 
-@keyframes rise { from { opacity: 0; transform: translateY(14px); } }
-@keyframes panel-up { from { transform: translateY(40px); opacity: 0.6; } }
 
 /* ============ RESPONSIVE: contenido centrado en pantallas anchas ============ */
 .login-hero,

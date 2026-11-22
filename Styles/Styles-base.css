@@ -43,6 +43,8 @@
   --chip-bg: #17104A;
   --chip-text: #FFFFFF;
   --hero-glow: rgba(90, 72, 214, 0.65);
+  --panel-bg: var(--bg-page);
+  --panel-edge: none;
   --hero-from: var(--brand-azul);
   --hero-to: var(--brand-azul-oscuro);
 
@@ -86,10 +88,10 @@
 
 /* ---------- Tema oscuro ("Día" de noche): misma marca, superficies profundas ---------- */
 :root[data-theme="dark"] {
-  --bg-page: #1D1758;
-  --bg-surface: #261F66;
-  --bg-subtle: #2E2772;
-  --bg-input: #201A5C;
+  --bg-page: #130F3C;
+  --bg-surface: #1D1757;
+  --bg-subtle: #262064;
+  --bg-input: #17124A;
   --border-subtle: rgba(255, 255, 255, 0.10);
   --border-strong: rgba(255, 255, 255, 0.20);
   --text-primary: #ECE9FF;
@@ -103,16 +105,23 @@
   --toast-text: #120C52;
   --chip-bg: var(--brand-lima);
   --chip-text: var(--brand-lima-ink);
-  --hero-glow: rgba(90, 72, 214, 0.22);
-  --hero-from: #2B2384;
-  --hero-to: #1D1758; /* = --bg-page: la franja se funde con el panel */
+  --hero-glow: rgba(120, 100, 255, 0.45);
+  --hero-from: #3422A8;   /* azul de marca, vibrante */
+  --hero-to: #22188A;
+  /* Panel: arranca un tono más claro y se hunde hacia el fondo, con brillo lima muy sutil arriba */
+  --panel-bg:
+    radial-gradient(55% 70px at 50% 0%, rgba(181, 219, 46, 0.10), transparent 100%),
+    linear-gradient(180deg, #211A62 0%, #130F3C 240px);
+  --panel-edge: 0 -22px 44px -14px rgba(6, 3, 30, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.14);
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 10px 24px -14px rgba(0, 0, 0, 0.7);
   --shadow-raised: 0 20px 40px -18px rgba(0, 0, 0, 0.8);
 }
 :root[data-theme="dark"] .field-input:focus { border-color: var(--accent); }
-/* En oscuro el panel se separa de la franja con un filo de luz, no con un salto de color */
-:root[data-theme="dark"] .login-panel,
-:root[data-theme="dark"] .app-panel { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08); }
+/* Paneles que suben sobre la franja de marca */
+.login-panel, .app-panel { background: var(--panel-bg); box-shadow: var(--panel-edge); }
+
+/* Mientras arranca la animación de entrada, la app no se muestra a medias */
+.anim-pending .device { visibility: hidden; }
 
 /* ---------- Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -357,3 +366,9 @@ textarea.field-input { padding: var(--space-sm) var(--space-md); min-height: 84p
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+/* Paquete que recorre la ruta (lo mueve Scripts-motion.js) */
+.route-art .route-courier { opacity: 0; }
+.route-art .courier-glow { fill: var(--accent); opacity: 0.22; }
+.route-art .courier-box { fill: var(--accent); stroke: var(--brand-lima-ink); stroke-width: 1.5; }
+.is-animating *, .is-animating *::before, .is-animating *::after { transition: none !important; }

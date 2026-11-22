@@ -5,7 +5,7 @@
 //  · API (app.loentrego.com/api) y peticiones que no son GET: nunca se cachean.
 //
 // Al cambiar archivos importantes, sube CACHE_VERSION para limpiar la caché vieja.
-const CACHE_VERSION = 'v3';
+const CACHE_VERSION = 'v4';
 const CACHE = `loentrego-app-${CACHE_VERSION}`;
 
 const APP_SHELL = [
@@ -19,6 +19,12 @@ const APP_SHELL = [
   './Scripts/Scripts-index.js',
   './Scripts/Scripts-stores.js',
   './Scripts/Scripts-pwa.js',
+  './Scripts/Scripts-motion.js',
+  './libs/gsap/gsap.min.js',
+  './libs/gsap/ScrollTrigger.min.js',
+  './libs/gsap/SplitText.min.js',
+  './libs/gsap/DrawSVGPlugin.min.js',
+  './libs/gsap/MotionPathPlugin.min.js',
   './img/LoEntrego2026-wordmark.png',
   './img/Minilogo-transparencia.png',
   './img/Minilogo-loentrego-2026.png',

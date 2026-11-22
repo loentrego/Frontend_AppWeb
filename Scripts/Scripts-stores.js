@@ -93,6 +93,7 @@
     state.lastFocus = document.activeElement;
     overlay.dataset.state = 'open';
     $('.sheet', overlay)?.focus({ preventScroll: true });
+    window.LoEntregoMotion?.sheetOpened(overlay);
   }
 
   function closeSheet(overlay) {
@@ -193,6 +194,7 @@
     setTimeout(() => {
       state.orders.unshift(order);
       renderOrders(order.id);
+      window.LoEntregoMotion?.orderAdded(order.id);
       form.reset();
       $('#f-ciudad').value = 'Bogotá';
       btn?.removeAttribute('aria-busy');
