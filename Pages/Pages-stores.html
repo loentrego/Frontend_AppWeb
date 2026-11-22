@@ -2,189 +2,219 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#3422A8">
 <title>LoEntrego — Comercio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../Styles/Styles-base.css">
 <link rel="stylesheet" href="../Styles/Styles-stores.css">
 <link rel="icon" href="../img/Minilogo-transparencia.png">
 </head>
 <body>
 
-<div class="phone">
+<div class="device app">
 
-  <!-- ============ COMERCIO APP ============ -->
-  <div class="app-shell" id="app-comercio">
-    <div class="header">
-      <div class="header-left">
-        <div class="brand-row">
-          <div class="eyebrow" style="margin:0">Comercio</div>
+  <main class="app-scroll">
+
+    <!-- ============ ZONA DE MARCA: ENCABEZADO + RESUMEN ============ -->
+    <section class="brand-zone app-hero" aria-label="Resumen de hoy">
+      <svg class="route-art" viewBox="0 0 390 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <path class="route-line" d="M-10 210 C 80 210, 110 150, 190 160 S 300 120, 330 60 S 380 10, 410 20"/>
+        <circle class="route-halo" cx="330" cy="60" r="12"/>
+        <circle class="route-dot" cx="330" cy="60" r="5"/>
+      </svg>
+
+      <header class="app-header">
+        <div class="app-header-brand">
+          <span class="brand-mark"><img src="../img/Minilogo-transparencia.png" alt="" aria-hidden="true"></span>
+          <div>
+            <p class="eyebrow">Comercio · Chapinero</p>
+            <h1 class="app-title">Tienda Central</h1>
+          </div>
         </div>
-        <div class="h1">Nuevo pedido</div>
-      </div>
-      <div class="avatar-btn" onclick="openSheet('sheet-comercio')">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="8" r="3.6" fill="currentColor"/>
-          <path d="M5 19.5c0-3.87 3.13-6.8 7-6.8s7 2.93 7 6.8" fill="currentColor"/>
-        </svg>
-      </div>
-    </div>
+        <button type="button" class="avatar-btn" data-action="open-sheet" data-target="sheet-account" aria-label="Abrir mi cuenta" aria-haspopup="dialog">TC</button>
+      </header>
 
-    <div class="screens">
-      <div class="screen active">
+      <div class="stats">
+        <div class="stat stat-total">
+          <span class="stat-label">Pedidos de hoy</span>
+          <span class="stat-value" data-stat="total">0</span>
+        </div>
+        <div class="stat-split">
+          <div class="stat">
+            <span class="stat-value" data-stat="entregado">0</span>
+            <span class="stat-label"><i class="dot dot-ok" aria-hidden="true"></i>Entregados</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" data-stat="pendiente">0</span>
+            <span class="stat-label"><i class="dot dot-pending" aria-hidden="true"></i>Por entregar</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="app-panel">
+
+    <!-- ============ NUEVO PEDIDO ============ -->
+    <section class="card" aria-labelledby="new-order-title">
+      <div class="card-head">
+        <h2 class="card-title" id="new-order-title">Nuevo pedido</h2>
+        <p class="card-sub">Llena los datos y lo recogemos en tu comercio.</p>
+      </div>
+
+      <form class="order-form" id="order-form" novalidate>
         <div class="field">
-          <label>Dirección de entrega</label>
-          <input type="text" placeholder="Calle 72 #10-34">
+          <label class="field-label" for="f-direccion">Dirección de entrega</label>
+          <input class="field-input" id="f-direccion" name="direccion" type="text" placeholder="Calle 72 #10-34" autocomplete="street-address" required>
+          <p class="field-hint" aria-live="polite"></p>
         </div>
         <div class="row-2">
           <div class="field">
-            <label>Ciudad</label>
-            <input type="text" placeholder="Bogotá">
+            <label class="field-label" for="f-ciudad">Ciudad</label>
+            <input class="field-input" id="f-ciudad" name="ciudad" type="text" placeholder="Bogotá" value="Bogotá" required>
+            <p class="field-hint" aria-live="polite"></p>
           </div>
           <div class="field">
-            <label>Cobro</label>
-            <input type="text" placeholder="$45.000">
+            <label class="field-label" for="f-cobro">Cobro</label>
+            <input class="field-input" id="f-cobro" name="cobro" type="text" inputmode="numeric" placeholder="$45.000" data-format="money">
+            <p class="field-hint" aria-live="polite"></p>
           </div>
         </div>
         <div class="field">
-          <label>Nombre de quien recibe</label>
-          <input type="text" placeholder="Ej: Andrea Gómez">
+          <label class="field-label" for="f-nombre">Nombre de quien recibe</label>
+          <input class="field-input" id="f-nombre" name="nombre" type="text" placeholder="Ej: Andrea Gómez" autocomplete="off" required>
+          <p class="field-hint" aria-live="polite"></p>
         </div>
         <div class="field">
-          <label>Número de quien recibe</label>
-          <input type="tel" placeholder="Ej: 300 123 4567">
+          <label class="field-label" for="f-telefono">Número de quien recibe</label>
+          <input class="field-input" id="f-telefono" name="telefono" type="tel" inputmode="tel" placeholder="Ej: 300 123 4567" autocomplete="off" required>
+          <p class="field-hint" aria-live="polite"></p>
         </div>
         <div class="field">
-          <label>Notas para el repartidor</label>
-          <textarea rows="2" placeholder="Entregar en portería, preguntar por Sr. Gómez"></textarea>
+          <label class="field-label" for="f-notas">Notas para el repartidor <span class="optional">(opcional)</span></label>
+          <textarea class="field-input" id="f-notas" name="notas" rows="2" placeholder="Entregar en portería, preguntar por Sr. Gómez"></textarea>
         </div>
-        <button class="btn-primary">Crear pedido</button>
 
-        <div class="section-title">Pedidos de hoy · 12</div>
-        <div class="order-item" onclick="openComercioOrder('Andrea Gómez','Calle 72 #10-34','Bogotá','300 123 4567','$45.000','Entregar en portería, preguntar por Sr. Gómez','no')">
-          <div class="order-info"><div class="order-name">Andrea Gómez</div><div class="order-sub">$45.000</div></div>
-          <div class="status-pill no">No entregado</div>
-        </div>
-        <div class="order-item" onclick="openComercioOrder('Marcela Ortiz','Calle 116 #19-40','Bogotá','312 789 0123','$32.000','Dejar con el celador','si')">
-          <div class="order-info"><div class="order-name">Marcela Ortiz</div><div class="order-sub">$32.000</div></div>
-          <div class="status-pill si">Entregado</div>
-        </div>
-        <div class="order-item" onclick="openComercioOrder('Julián Ríos','Calle 145 #60-30','Bogotá','315 456 7890','$28.000','Tocar el timbre del apto 502','no')">
-          <div class="order-info"><div class="order-name">Julián Ríos</div><div class="order-sub">$28.000</div></div>
-          <div class="status-pill no">No entregado</div>
-        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="order-submit">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          <span class="btn-text">Crear pedido</span>
+        </button>
+      </form>
+    </section>
+
+    <!-- ============ PEDIDOS DE HOY ============ -->
+    <section class="orders" aria-labelledby="orders-title">
+      <div class="section-head">
+        <h2 class="section-title" id="orders-title">Pedidos de hoy</h2>
+        <span class="count-chip" data-stat="total">0</span>
       </div>
-    </div>
-  </div>
 
-  <!-- ============ ACCOUNT SHEET: COMERCIO ============ -->
-  <div class="sheet-overlay" id="overlay-sheet-comercio" onclick="closeSheetBg(event, 'sheet-comercio')">
-    <div class="account-sheet">
-      <div class="sheet-handle"></div>
+      <ul class="order-list" id="order-list" role="list"></ul>
+
+      <div class="empty-state" id="orders-empty" hidden>
+        <img src="../img/Minilogo-transparencia.png" alt="" aria-hidden="true">
+        <p class="empty-title">Aún no tienes pedidos hoy</p>
+        <p class="empty-sub">Crea el primero con el formulario de arriba.</p>
+      </div>
+    </section>
+
+    </div>
+  </main>
+
+  <!-- ============ HOJA: MI CUENTA ============ -->
+  <div class="sheet-overlay" id="sheet-account" data-state="closed" data-action="close-sheet-bg">
+    <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="account-name" tabindex="-1">
+      <span class="sheet-handle" aria-hidden="true"></span>
+      <button type="button" class="icon-btn sheet-close" data-action="close-sheet" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+
       <div class="account-header">
-        <div class="account-avatar">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="8" r="3.6" fill="currentColor"/>
-            <path d="M5 19.5c0-3.87 3.13-6.8 7-6.8s7 2.93 7 6.8" fill="currentColor"/>
-          </svg>
-        </div>
+        <span class="account-avatar" aria-hidden="true">TC</span>
         <div>
-          <div class="account-name">Tienda Central</div>
-          <div class="account-role">Comercio · Chapinero</div>
+          <h2 class="account-name" id="account-name">Tienda Central</h2>
+          <p class="account-role">Comercio · Chapinero</p>
         </div>
       </div>
-      <div class="account-row">
-        <div>
-          <div class="detail-text-label">Nombre del comercio</div>
-          <div class="detail-text-value" style="margin-top:4px;">Tienda Central</div>
+
+      <dl class="detail-list">
+        <div class="detail-row">
+          <div><dt>Nombre del comercio</dt><dd>Tienda Central</dd></div>
         </div>
-      </div>
-      <div class="account-row">
-        <div>
-          <div class="detail-text-label">Dirección</div>
-          <div class="detail-text-value" style="margin-top:4px;">Cra 13 #45-20, Chapinero, Bogotá</div>
+        <div class="detail-row">
+          <div><dt>Dirección</dt><dd>Cra 13 #45-20, Chapinero, Bogotá</dd></div>
+          <button type="button" class="edit-btn" data-action="edit-field" data-field="direccion" aria-label="Editar dirección"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></button>
         </div>
-        <button class="edit-icon-btn" onclick="editField('direccion')">✎</button>
-      </div>
-      <div class="account-row">
-        <div>
-          <div class="detail-text-label">Celular</div>
-          <div class="detail-text-value" style="margin-top:4px;">315 200 4567</div>
+        <div class="detail-row">
+          <div><dt>Celular</dt><dd>315 200 4567</dd></div>
+          <button type="button" class="edit-btn" data-action="edit-field" data-field="celular" aria-label="Editar celular"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></button>
         </div>
-        <button class="edit-icon-btn" onclick="editField('celular')">✎</button>
-      </div>
-      <div class="account-row" style="border-bottom:none;">
-        <div>
-          <div class="detail-text-label">Correo</div>
-          <div class="detail-text-value" style="margin-top:4px;">tiendacentral@correo.com</div>
+        <div class="detail-row">
+          <div><dt>Correo</dt><dd>tiendacentral@correo.com</dd></div>
+          <button type="button" class="edit-btn" data-action="edit-field" data-field="correo" aria-label="Editar correo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></button>
         </div>
-        <button class="edit-icon-btn" onclick="editField('correo')">✎</button>
-      </div>
-      <button class="logout-btn" onclick="logout()">Cerrar sesión</button>
-    </div>
+      </dl>
+
+      <button type="button" class="btn btn-ghost btn-block sheet-action" data-action="logout">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 17l-5-5 5-5M5 12h11"/></svg>
+        Cerrar sesión
+      </button>
+    </section>
   </div>
 
-  <!-- ============ COMERCIO ORDER DETAIL (editable) ============ -->
-   <div class="order-overlay" id="comercio-order-overlay" onclick="closeComercioOrderBg(event)">
-    <div class="order-sheet" onclick="event.stopPropagation()">
-      <div class="sheet-handle"></div>
-      <div class="status-pill" id="co-estado" style="display:inline-block; margin-bottom:18px; padding:8px 14px; font-size:12px;">No entregado</div>
+  <!-- ============ HOJA: DETALLE DEL PEDIDO ============ -->
+  <div class="sheet-overlay" id="sheet-order" data-state="closed" data-action="close-sheet-bg">
+    <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="od-nombre" tabindex="-1">
+      <span class="sheet-handle" aria-hidden="true"></span>
+      <button type="button" class="icon-btn sheet-close" data-action="close-sheet" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
 
-      <div class="detail-row-edit">
-        <div>
-          <div class="detail-text-label">Dirección de entrega</div>
-          <div class="detail-text-value" id="co-destino">Calle 72 #10-34</div>
-        </div>
-        <button class="edit-icon-btn">✎</button>
+      <div class="order-detail-head">
+        <span class="status-pill" id="od-estado" data-status="pendiente">No entregado</span>
+        <h2 class="order-detail-name" id="od-nombre">—</h2>
+        <p class="order-detail-amount"><span>Cobro</span> <strong id="od-cobro">—</strong></p>
       </div>
-      <div class="detail-row-edit">
-        <div>
-          <div class="detail-text-label">Ciudad</div>
-          <div class="detail-text-value" id="co-ciudad">Bogotá</div>
+
+      <dl class="detail-list">
+        <div class="detail-row">
+          <div><dt>Dirección de entrega</dt><dd id="od-direccion">—</dd></div>
+          <button type="button" class="edit-btn" data-action="edit-field" data-field="direccion del pedido" aria-label="Editar dirección de entrega"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></button>
         </div>
-        <button class="edit-icon-btn">✎</button>
-      </div>
-      <div class="detail-row-edit">
-        <div>
-          <div class="detail-text-label">Recibe</div>
-          <div class="detail-text-value" id="co-destinatario">Andrea Gómez</div>
+        <div class="detail-row">
+          <div><dt>Ciudad</dt><dd id="od-ciudad">—</dd></div>
+          <button type="button" class="edit-btn" data-action="edit-field" data-field="ciudad" aria-label="Editar ciudad"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></button>
         </div>
-        <button class="edit-icon-btn">✎</button>
-      </div>
-      <div class="detail-row-edit">
-        <div>
-          <div class="detail-text-label">Número de quien recibe</div>
-          <div class="detail-text-value" id="co-telefono">300 123 4567</div>
+        <div class="detail-row">
+          <div><dt>Número de quien recibe</dt><dd id="od-telefono">—</dd></div>
+          <button type="button" class="edit-btn" data-action="edit-field" data-field="telefono" aria-label="Editar número de quien recibe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></button>
         </div>
-        <button class="edit-icon-btn">✎</button>
-      </div>
-      <div class="detail-row-edit">
-        <div>
-          <div class="detail-text-label">Cobro</div>
-          <div class="detail-text-value" id="co-cobro">$45.000</div>
+        <div class="detail-row">
+          <div><dt>Notas</dt><dd id="od-notas">—</dd></div>
+          <button type="button" class="edit-btn" data-action="edit-field" data-field="notas" aria-label="Editar notas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></button>
         </div>
-        <button class="edit-icon-btn">✎</button>
-      </div>
-      <div class="detail-row-edit" style="border-bottom:none;">
-        <div>
-          <div class="detail-text-label">Notas</div>
-          <div class="detail-text-value" id="co-notas">Entregar en portería, preguntar por Sr. Gómez</div>
-        </div>
-        <button class="edit-icon-btn">✎</button>
-      </div>
+      </dl>
 
       <div class="pdf-card">
-        <div class="pdf-icon">PDF</div>
+        <span class="pdf-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
+        </span>
         <div class="pdf-info">
-          <div class="pdf-name">Guía de envío</div>
-          <div class="pdf-sub">Lista para descargar</div>
+          <p class="pdf-name">Guía de envío</p>
+          <p class="pdf-sub">PDF · lista para descargar</p>
         </div>
-        <button class="pdf-download-btn">Descargar</button>
+        <button type="button" class="btn btn-primary pdf-download-btn" data-action="download-guide">Descargar</button>
       </div>
 
-      <button class="delete-order-btn">Eliminar pedido</button>
-    </div>
+      <button type="button" class="btn btn-danger btn-block sheet-action" data-action="delete-order">Eliminar pedido</button>
+    </section>
   </div>
+
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+</div>
+
 <script src="../Scripts/Scripts-stores.js"></script>
 </body>
 </html>
