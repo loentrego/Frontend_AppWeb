@@ -3,9 +3,8 @@
 //  Requiere, antes de este archivo: libs/gsap/gsap.min.js, ScrollTrigger,
 //  SplitText y DrawSVGPlugin.
 //
-//  Idea: "Cada entrega, en movimiento". En el login, una ruta punteada se
-//  dibuja y un cometa de luz lima la recorre; al llegar al destino, ondas.
-//  La ruta va por la esquina superior derecha: no pasa por encima del texto.
+//  Idea: "Cada entrega, en movimiento". En el login, una red de calles con
+//  cometas lima (animada en CSS) aparece en la esquina, lejos del texto.
 //  Pensado para uso diario: la entrada completa solo se ve la primera vez
 //  de cada sesión, y los bucles se detienen tras unas pocas repeticiones.
 //  Solo se anima transform y opacity.
@@ -26,12 +25,6 @@
     ease: 'power4.out',   // curva de entrada (power3.out = más suave)
     entrada: 0.85,        // duración de las entradas (s)
     stagger: 0.06,        // separación entre elementos en cascada (s)
-    trazoRuta: 1.4,       // cuánto tarda en dibujarse la ruta (s)
-    viajeCometa: 2.4,     // cuánto tarda el cometa en recorrer la ruta (s)
-    largoCometa: 18,      // largo de la estela del cometa (% de la ruta)
-    pausaCometa: 2.6,     // pausa entre un cometa y el siguiente (s)
-    vueltasCometa: 5,     // cuántas veces pasa antes de quedarse quieto
-    ondas: 1.6,           // duración de las ondas al llegar al destino (s)
     saltosCaja: 3,        // saltitos de la caja del encabezado antes de quedarse quieta
     cadaSalto: 8,         // cada cuántos segundos salta (s)
     contadores: 1.1,      // duración de los números que suben (s)
@@ -71,56 +64,6 @@
   document.addEventListener('visibilitychange', () => pausable.forEach((t) => (document.hidden ? t.pause() : t.resume())));
 
   // ------------------------------------------------------------------
-  //  Ruta punteada + cometa de luz (login)
-  // ------------------------------------------------------------------
-  // Fracción de la ruta más cercana a un punto (para sincronizar las ondas)
-  function fractionAt(path, x, y) {
-    const len = path.getTotalLength();
-    let best = 0, bestD = Infinity;
-    for (let i = 0; i <= 200; i++) {
-      const p = path.getPointAtLength((len * i) / 200);
-      const d = (p.x - x) ** 2 + (p.y - y) ** 2;
-      if (d < bestD) { bestD = d; best = i / 200; }
-    }
-    return best;
-  }
-
-  function routeIntro(svg, tl, at = 0) {
-    if (!svg) return;
-    const mask = $('.route-mask', svg);
-    const path = $('.route-line', svg);
-    const grid = $('.route-grid', svg);
-    const dot = $('.route-dot', svg);
-    const halo = $('.route-halo', svg);
-    const comet = $$('.route-comet, .route-comet-glow', svg);
-    const ripples = $$('.ripple', svg);
-
-    if (grid) tl.from(grid, { autoAlpha: 0, duration: 1.2, ease: 'power2.out' }, at);
-    if (mask && window.DrawSVGPlugin) tl.from(mask, { drawSVG: '0%', duration: K.trazoRuta, ease: 'power2.inOut' }, at);
-    if (dot) tl.from([dot, halo], { scale: 0, transformOrigin: '50% 50%', duration: 0.55, ease: 'back.out(3)' }, at + K.trazoRuta * 0.6);
-
-    if (comet.length && path && window.DrawSVGPlugin) {
-      const L = K.largoCometa / 100;
-      const f = dot ? fractionAt(path, +dot.getAttribute('cx'), +dot.getAttribute('cy')) : 0.5;
-      const hit = 0.3 + K.viajeCometa * Math.max(0, f - L) / (1 - L);
-      gsap.set(comet, { drawSVG: '0% 0%' });
-      gsap.set($('.route-comet', svg), { opacity: 1 });
-      gsap.set($('.route-comet-glow', svg), { opacity: 0.2 });
-      const loop = gsap.timeline({ repeat: K.vueltasCometa - 1, repeatDelay: K.pausaCometa, delay: at + K.trazoRuta * 0.9 });
-      loop
-        .fromTo(comet, { drawSVG: '0% 0%' }, { drawSVG: '0% ' + L * 100 + '%', duration: 0.3, ease: 'none' })
-        .to(comet, { drawSVG: (100 - L * 100) + '% 100%', duration: K.viajeCometa, ease: 'none' })
-        .to(comet, { drawSVG: '100% 100%', duration: 0.3, ease: 'none' });
-      if (ripples.length) {
-        loop.fromTo(ripples, { scale: 1, opacity: 0.8, transformOrigin: '50% 50%' },
-          { scale: 5, opacity: 0, duration: K.ondas, ease: 'power2.out', stagger: 0.22 }, hit);
-      }
-      if (dot) loop.fromTo(dot, { scale: 1, transformOrigin: '50% 50%' }, { scale: 1.7, duration: 0.18, ease: 'power2.out', yoyo: true, repeat: 1 }, hit);
-      pausable.push(loop);
-    }
-  }
-
-  // ------------------------------------------------------------------
   //  LOGIN
   // ------------------------------------------------------------------
   function loginIntro(full) {
@@ -139,7 +82,7 @@
       tl.from(words, { yPercent: 115, duration: 0.7, stagger: 0.04 }, 0)
         .from('.login-panel', { y: 24, autoAlpha: 0, duration: 0.5 }, 0);
     }
-    routeIntro($('.login-hero .route-art'), tl, full ? 0.15 : 0);
+    tl.from('.login-hero .city-art', { autoAlpha: 0, duration: 1.2, ease: 'power2.out' }, full ? 0.2 : 0);
     return lock(tl);
   }
 
@@ -148,7 +91,7 @@
       gsap.timeline({ defaults: { ease: 'power3.in', duration: K.salida }, onComplete: resolve })
         .to('.login-panel', { yPercent: 12, autoAlpha: 0 }, 0)
         .to(['.login-copy', '.login-logo'], { y: -24, autoAlpha: 0, stagger: 0.05 }, 0.05)
-        .to('.login-hero .route-art', { autoAlpha: 0 }, 0);
+        .to('.login-hero .city-art', { autoAlpha: 0 }, 0);
       setTimeout(resolve, K.salida * 1000 + 400);
     });
   }

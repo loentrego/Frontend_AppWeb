@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="Styles/Styles-base.css?v=20261122o">
-<link rel="stylesheet" href="Styles/Styles-index.css?v=20261122o">
+<link rel="stylesheet" href="Styles/Styles-base.css?v=20261122p">
+<link rel="stylesheet" href="Styles/Styles-index.css?v=20261122p">
 <link rel="icon" href="img/icons/icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="LoEntrego">
-<script src="Scripts/Scripts-theme.js?v=20261122o"></script>
+<script src="Scripts/Scripts-theme.js?v=20261122p"></script>
 </head>
 <body>
 
@@ -25,20 +25,18 @@
 
   <!-- ============ ZONA DE MARCA ============ -->
   <section class="brand-zone login-hero" aria-labelledby="login-title">
-    <svg class="route-art" viewBox="0 0 390 380" preserveAspectRatio="xMaxYMin slice" aria-hidden="true">
+    <svg class="city city-art" viewBox="0 0 400 360" preserveAspectRatio="xMaxYMin slice" aria-hidden="true">
       <defs>
-        <pattern id="login-route-grid" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="11" cy="11" r="1.1" fill="#fff"/></pattern>
-        <radialGradient id="login-route-fade" cx="80%" cy="25%" r="60%"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
-        <mask id="login-route-gridmask" maskUnits="userSpaceOnUse"><rect width="390" height="380" fill="url(#login-route-fade)"/></mask>
-        <mask id="login-route-reveal" maskUnits="userSpaceOnUse"><path class="route-mask" d="M 170 -10 C 230 40, 250 92, 312 100 S 382 150, 412 232" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round"/></mask>
+        <radialGradient id="login-city-fade" gradientUnits="userSpaceOnUse" cx="352" cy="36" r="300">
+          <stop offset="0" stop-color="#fff"/><stop offset="0.3" stop-color="#fff"/><stop offset="0.62" stop-color="#fff" stop-opacity="0"/>
+        </radialGradient>
+        <mask id="login-city-mask" maskUnits="userSpaceOnUse"><rect width="400" height="360" fill="url(#login-city-fade)"/></mask>
       </defs>
-      <g class="route-grid" mask="url(#login-route-gridmask)"><rect x="-22" y="-22" width="434" height="424" fill="url(#login-route-grid)"/></g>
-      <path id="login-route-path" class="route-line" d="M 170 -10 C 230 40, 250 92, 312 100 S 382 150, 412 232" mask="url(#login-route-reveal)"/>
-      <path class="route-comet-glow" d="M 170 -10 C 230 40, 250 92, 312 100 S 382 150, 412 232"/>
-      <path class="route-comet" d="M 170 -10 C 230 40, 250 92, 312 100 S 382 150, 412 232"/>
-      <g class="route-ripples"><circle class="ripple" cx="312" cy="100" r="6"/><circle class="ripple" cx="312" cy="100" r="6"/><circle class="ripple" cx="312" cy="100" r="6"/></g>
-      <circle class="route-halo" cx="312" cy="100" r="14"/>
-      <circle class="route-dot" cx="312" cy="100" r="6"/>
+      <g mask="url(#login-city-mask)">
+        <path class="c-street" d="M40 0V360 M120 0V360 M200 0V360 M280 0V360 M360 0V360 M0 36H400 M0 108H280 M360 108H400 M0 180H400 M0 252H400 M0 324H200 M280 324H400 M0 324 L200 180 L400 16"/>
+        <circle class="c-hub" cx="40" cy="36" r="4" style="--d:0.4s"/><circle class="c-node" cx="40" cy="252" r="2.6"/><circle class="c-node" cx="120" cy="252" r="2.6"/><circle class="c-node" cx="120" cy="324" r="2.6"/><circle class="c-node" cx="200" cy="108" r="2.6"/><circle class="c-node" cx="200" cy="180" r="2.6"/><circle class="c-node" cx="200" cy="252" r="2.6"/><circle class="c-node" cx="200" cy="324" r="2.6"/><circle class="c-node" cx="360" cy="252" r="2.6"/>
+        <path class="c-glow" pathLength="100" d="M0 36H200V252H400" style="--t:6.0s;--w:0.6s"/><path class="c-comet" pathLength="100" d="M0 36H200V252H400" style="--t:6.0s;--w:0.6s"/><path class="c-glow" pathLength="100" d="M360 360V252H40V0" style="--t:7.3s;--w:2.5s"/><path class="c-comet" pathLength="100" d="M360 360V252H40V0" style="--t:7.3s;--w:2.5s"/><path class="c-glow" pathLength="100" d="M0 324 L200 180 L400 16" style="--t:8.6s;--w:4.4s"/><path class="c-comet" pathLength="100" d="M0 324 L200 180 L400 16" style="--t:8.6s;--w:4.4s"/><path class="c-glow" pathLength="100" d="M360 360V108H280V0" style="--t:9.9s;--w:6.3s"/><path class="c-comet" pathLength="100" d="M360 360V108H280V0" style="--t:9.9s;--w:6.3s"/>
+      </g>
     </svg>
 
     <img class="login-logo" src="img/LoEntrego2026-wordmark.png" alt="LoEntrego — Logística de última milla" width="1383" height="374">
@@ -90,12 +88,12 @@
 
 </main>
 
-<script src="Scripts/Scripts-index.js?v=20261122o"></script>
+<script src="Scripts/Scripts-index.js?v=20261122p"></script>
 <script src="libs/gsap/gsap.min.js"></script>
 <script src="libs/gsap/ScrollTrigger.min.js"></script>
 <script src="libs/gsap/SplitText.min.js"></script>
 <script src="libs/gsap/DrawSVGPlugin.min.js"></script>
-<script src="Scripts/Scripts-motion.js?v=20261122o"></script>
-<script src="Scripts/Scripts-pwa.js?v=20261122o"></script>
+<script src="Scripts/Scripts-motion.js?v=20261122p"></script>
+<script src="Scripts/Scripts-pwa.js?v=20261122p"></script>
 </body>
 </html>

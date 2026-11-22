@@ -185,31 +185,30 @@ body {
     linear-gradient(165deg, var(--hero-from) 0%, var(--hero-to) 100%);
   isolation: isolate;
 }
-/* ---------- Ruta punteada con cometa de luz (Scripts-motion.js) ----------
-   Va por la esquina superior derecha de la franja: nunca cruza títulos ni texto. */
-.route-art {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-.route-art .route-line {
+/* ---------- Red de calles: nuestro movimiento por la ciudad ----------
+   Calles discontinuas, nodos en los cruces y cometas lima que recorren
+   distintas rutas. Sutil y solo con transform/opacity/trazo. */
+.city { position: absolute; pointer-events: none; }
+.city .c-street { fill: none; stroke: var(--city-street, rgba(255, 255, 255, 0.16)); stroke-width: 1.5; stroke-dasharray: 2 8; stroke-linecap: round; }
+.city .c-node { fill: var(--city-node, rgba(255, 255, 255, 0.3)); }
+.city .c-hub { fill: var(--city-hub, #B5DB2E); opacity: 0.7; transform-box: fill-box; transform-origin: center; animation: c-hub 4s ease-in-out var(--d, 0s) infinite; }
+.city .c-comet, .city .c-glow {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.22);
-  stroke-width: 2;
-  stroke-dasharray: 2 9;
+  stroke: var(--city-comet, #B5DB2E);
   stroke-linecap: round;
+  stroke-dasharray: 9 140;
+  stroke-dashoffset: 9;
+  animation: c-comet var(--t, 7s) linear var(--w, 0s) var(--city-loops, infinite) both;
 }
-.route-art .route-dot { fill: var(--accent); }
-.route-art .route-halo { fill: var(--accent); opacity: 0.2; }
-.route-art .route-comet,
-.route-art .route-comet-glow { fill: none; stroke: var(--accent); stroke-linecap: round; opacity: 0; }
-.route-art .route-comet { stroke-width: 2.25; }
-.route-art .route-comet-glow { stroke-width: 7; }
-.route-art .ripple { fill: none; stroke: var(--accent); stroke-width: 1.5; opacity: 0; }
-.route-art .route-grid { opacity: 0.08; }
+.city .c-comet { stroke-width: 2.25; }
+.city .c-glow { stroke-width: 7; opacity: 0.18; }
+@keyframes c-comet { to { stroke-dashoffset: -100; } }
+@keyframes c-hub { 0%, 100% { transform: scale(1); opacity: 0.55; } 50% { transform: scale(1.5); opacity: 0.9; } }
+@media (prefers-reduced-motion: reduce) {
+  .city .c-comet, .city .c-glow { animation: none; opacity: 0; }
+  .city .c-hub { animation: none; }
+}
+.city-art { inset: 0; z-index: -1; width: 100%; height: 100%; --city-loops: 4; }
 
 /* ---------- Utilidades ---------- */
 .text-accent { color: var(--accent); }
