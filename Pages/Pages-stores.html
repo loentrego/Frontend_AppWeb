@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LoEntrego — Comercio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../Styles/Styles-stores.css">
+<link rel="icon" href="../img/Minilogo-transparencia.png">
+</head>
+<body>
+
+<div class="phone">
+
+  <!-- ============ COMERCIO APP ============ -->
+  <div class="app-shell" id="app-comercio">
+    <div class="header">
+      <div class="header-left">
+        <div class="brand-row">
+          <div class="eyebrow" style="margin:0">Comercio</div>
+        </div>
+        <div class="h1">Nuevo pedido</div>
+      </div>
+      <div class="avatar-btn" onclick="openSheet('sheet-comercio')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="8" r="3.6" fill="currentColor"/>
+          <path d="M5 19.5c0-3.87 3.13-6.8 7-6.8s7 2.93 7 6.8" fill="currentColor"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="screens">
+      <div class="screen active">
+        <div class="field">
+          <label>Dirección de entrega</label>
+          <input type="text" placeholder="Calle 72 #10-34">
+        </div>
+        <div class="row-2">
+          <div class="field">
+            <label>Ciudad</label>
+            <input type="text" placeholder="Bogotá">
+          </div>
+          <div class="field">
+            <label>Cobro</label>
+            <input type="text" placeholder="$45.000">
+          </div>
+        </div>
+        <div class="field">
+          <label>Nombre de quien recibe</label>
+          <input type="text" placeholder="Ej: Andrea Gómez">
+        </div>
+        <div class="field">
+          <label>Número de quien recibe</label>
+          <input type="tel" placeholder="Ej: 300 123 4567">
+        </div>
+        <div class="field">
+          <label>Notas para el repartidor</label>
+          <textarea rows="2" placeholder="Entregar en portería, preguntar por Sr. Gómez"></textarea>
+        </div>
+        <button class="btn-primary">Crear pedido</button>
+
+        <div class="section-title">Pedidos de hoy · 12</div>
+        <div class="order-item" onclick="openComercioOrder('Andrea Gómez','Calle 72 #10-34','Bogotá','300 123 4567','$45.000','Entregar en portería, preguntar por Sr. Gómez','no')">
+          <div class="order-info"><div class="order-name">Andrea Gómez</div><div class="order-sub">$45.000</div></div>
+          <div class="status-pill no">No entregado</div>
+        </div>
+        <div class="order-item" onclick="openComercioOrder('Marcela Ortiz','Calle 116 #19-40','Bogotá','312 789 0123','$32.000','Dejar con el celador','si')">
+          <div class="order-info"><div class="order-name">Marcela Ortiz</div><div class="order-sub">$32.000</div></div>
+          <div class="status-pill si">Entregado</div>
+        </div>
+        <div class="order-item" onclick="openComercioOrder('Julián Ríos','Calle 145 #60-30','Bogotá','315 456 7890','$28.000','Tocar el timbre del apto 502','no')">
+          <div class="order-info"><div class="order-name">Julián Ríos</div><div class="order-sub">$28.000</div></div>
+          <div class="status-pill no">No entregado</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ACCOUNT SHEET: COMERCIO ============ -->
+  <div class="sheet-overlay" id="overlay-sheet-comercio" onclick="closeSheetBg(event, 'sheet-comercio')">
+    <div class="account-sheet">
+      <div class="sheet-handle"></div>
+      <div class="account-header">
+        <div class="account-avatar">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="8" r="3.6" fill="currentColor"/>
+            <path d="M5 19.5c0-3.87 3.13-6.8 7-6.8s7 2.93 7 6.8" fill="currentColor"/>
+          </svg>
+        </div>
+        <div>
+          <div class="account-name">Tienda Central</div>
+          <div class="account-role">Comercio · Chapinero</div>
+        </div>
+      </div>
+      <div class="account-row">
+        <div>
+          <div class="detail-text-label">Nombre del comercio</div>
+          <div class="detail-text-value" style="margin-top:4px;">Tienda Central</div>
+        </div>
+      </div>
+      <div class="account-row">
+        <div>
+          <div class="detail-text-label">Dirección</div>
+          <div class="detail-text-value" style="margin-top:4px;">Cra 13 #45-20, Chapinero, Bogotá</div>
+        </div>
+        <button class="edit-icon-btn" onclick="editField('direccion')">✎</button>
+      </div>
+      <div class="account-row">
+        <div>
+          <div class="detail-text-label">Celular</div>
+          <div class="detail-text-value" style="margin-top:4px;">315 200 4567</div>
+        </div>
+        <button class="edit-icon-btn" onclick="editField('celular')">✎</button>
+      </div>
+      <div class="account-row" style="border-bottom:none;">
+        <div>
+          <div class="detail-text-label">Correo</div>
+          <div class="detail-text-value" style="margin-top:4px;">tiendacentral@correo.com</div>
+        </div>
+        <button class="edit-icon-btn" onclick="editField('correo')">✎</button>
+      </div>
+      <button class="logout-btn" onclick="logout()">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <!-- ============ COMERCIO ORDER DETAIL (editable) ============ -->
+   <div class="order-overlay" id="comercio-order-overlay" onclick="closeComercioOrderBg(event)">
+    <div class="order-sheet" onclick="event.stopPropagation()">
+      <div class="sheet-handle"></div>
+      <div class="status-pill" id="co-estado" style="display:inline-block; margin-bottom:18px; padding:8px 14px; font-size:12px;">No entregado</div>
+
+      <div class="detail-row-edit">
+        <div>
+          <div class="detail-text-label">Dirección de entrega</div>
+          <div class="detail-text-value" id="co-destino">Calle 72 #10-34</div>
+        </div>
+        <button class="edit-icon-btn">✎</button>
+      </div>
+      <div class="detail-row-edit">
+        <div>
+          <div class="detail-text-label">Ciudad</div>
+          <div class="detail-text-value" id="co-ciudad">Bogotá</div>
+        </div>
+        <button class="edit-icon-btn">✎</button>
+      </div>
+      <div class="detail-row-edit">
+        <div>
+          <div class="detail-text-label">Recibe</div>
+          <div class="detail-text-value" id="co-destinatario">Andrea Gómez</div>
+        </div>
+        <button class="edit-icon-btn">✎</button>
+      </div>
+      <div class="detail-row-edit">
+        <div>
+          <div class="detail-text-label">Número de quien recibe</div>
+          <div class="detail-text-value" id="co-telefono">300 123 4567</div>
+        </div>
+        <button class="edit-icon-btn">✎</button>
+      </div>
+      <div class="detail-row-edit">
+        <div>
+          <div class="detail-text-label">Cobro</div>
+          <div class="detail-text-value" id="co-cobro">$45.000</div>
+        </div>
+        <button class="edit-icon-btn">✎</button>
+      </div>
+      <div class="detail-row-edit" style="border-bottom:none;">
+        <div>
+          <div class="detail-text-label">Notas</div>
+          <div class="detail-text-value" id="co-notas">Entregar en portería, preguntar por Sr. Gómez</div>
+        </div>
+        <button class="edit-icon-btn">✎</button>
+      </div>
+
+      <div class="pdf-card">
+        <div class="pdf-icon">PDF</div>
+        <div class="pdf-info">
+          <div class="pdf-name">Guía de envío</div>
+          <div class="pdf-sub">Lista para descargar</div>
+        </div>
+        <button class="pdf-download-btn">Descargar</button>
+      </div>
+
+      <button class="delete-order-btn">Eliminar pedido</button>
+    </div>
+  </div>
+<script src="../Scripts/Scripts-stores.js"></script>
+</body>
+</html>
