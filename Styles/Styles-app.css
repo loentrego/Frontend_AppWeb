@@ -509,6 +509,9 @@
 
 /* Los avisos van por encima del botón flotante */
 .app .toast-region { bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
-/* Etiquetas que ocupan dos líneas: el punto acompaña al texto centrado */
-.stat-split .stat-label { display: block; text-align: center; }
-.stat-split .stat-label .dot { display: inline-block; margin-right: 5px; vertical-align: 1px; }
+/* Resumen: la tarjeta verde cede espacio para que las etiquetas queden en una línea */
+.stats { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.5fr); }
+.stat-split .stat-label { display: inline-flex; align-items: center; justify-content: center; gap: 5px; white-space: nowrap; }
+@media (max-width: 360px) {
+  .stats, [data-role="repartidor"] .stats { grid-template-columns: 1fr; }
+}

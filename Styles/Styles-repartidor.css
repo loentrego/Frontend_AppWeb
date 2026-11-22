@@ -7,7 +7,7 @@
 /* ============ ZONA DE MARCA ============ */
 .stat-value .of { font-size: 0.5em; font-weight: 600; opacity: 0.6; margin-left: 2px; }
 .stat-value.money { font-size: clamp(0.95rem, 3.7vw, 1.15rem); letter-spacing: -0.02em; }
-[data-role="repartidor"] .stats { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.5fr); }
+[data-role="repartidor"] .stats { grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.6fr); }
 
 /* Barra del día: un segmento por pedido */
 .day-bar { display: flex; gap: 4px; margin-top: var(--space-sm); }
@@ -201,3 +201,7 @@
 }
 .done-bit:nth-child(3n) { background: #fff; border-radius: 50%; }
 .done-msg { font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 700; color: #fff; }
+
+@media (max-width: 360px) {
+  [data-role="repartidor"] .stats { grid-template-columns: 1fr; }
+}
