@@ -1,0 +1,20 @@
+{
+  "name": "LoEntrego",
+  "short_name": "LoEntrego",
+  "description": "Logística de última milla: crea pedidos y sigue cada entrega.",
+  "lang": "es-CO",
+  "dir": "ltr",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#3422A8",
+  "theme_color": "#3422A8",
+  "categories": ["business", "productivity", "shopping"],
+  "icons": [
+    { "src": "img/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "img/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "img/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
