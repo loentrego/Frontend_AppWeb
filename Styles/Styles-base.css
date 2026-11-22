@@ -189,7 +189,8 @@ body {
    Calles discontinuas, nodos en los cruces y cometas lima que recorren
    distintas rutas. Sutil y solo con transform/opacity/trazo. */
 .city { position: absolute; pointer-events: none; }
-.city .c-street { fill: none; stroke: var(--city-street, rgba(255, 255, 255, 0.16)); stroke-width: 1.5; stroke-dasharray: 2 8; stroke-linecap: round; }
+.city .c-street { fill: none; stroke: var(--city-street, rgba(255, 255, 255, 0.16)); stroke-width: 1.1; stroke-dasharray: 2 6; stroke-linecap: round; }
+.city .c-avenue { fill: none; stroke: var(--city-avenue, rgba(255, 255, 255, 0.32)); stroke-width: 2.2; stroke-dasharray: 6 7; stroke-linecap: round; }
 .city .c-node { fill: var(--city-node, rgba(255, 255, 255, 0.3)); }
 .city .c-hub { fill: var(--city-hub, #B5DB2E); opacity: 0.7; transform-box: fill-box; transform-origin: center; animation: c-hub 4s ease-in-out var(--d, 0s) infinite; }
 .city .c-comet, .city .c-glow {
