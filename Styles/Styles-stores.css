@@ -8,7 +8,7 @@
   flex-direction: column;
   height: 100dvh;
 }
-@media (min-width: 560px) {
+@media (min-width: 560px) and (min-height: 700px) {
   .app { height: min(820px, calc(100dvh - 4rem)); }
 }
 
@@ -476,7 +476,7 @@
 
 .btn-danger[data-confirm] { background: var(--danger); color: #fff; border-color: var(--danger); }
 
-@media (max-width: 559px) {
+@media (max-width: 559px), (max-height: 699px) {
   .sheet-overlay { position: fixed; }
 }
 
@@ -518,3 +518,22 @@
   box-shadow: 0 6px 14px -8px rgba(52, 34, 168, 0.9);
 }
 :root[data-theme="dark"] .theme-option[aria-checked="true"] { background: var(--accent); color: var(--accent-ink); box-shadow: none; }
+
+/* ============ RESPONSIVE ============ */
+.stats { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); }
+.stat-split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+
+/* Celulares pequeños: el total arriba en una fila, el par debajo */
+@media (max-width: 360px) {
+  .stats { grid-template-columns: 1fr; }
+  .stat-total { flex-direction: row; align-items: center; gap: var(--space-sm); }
+  .stat-total .stat-value { font-size: 2.25rem; order: -1; }
+}
+
+/* Pantallas anchas sin marco (horizontal, tablet): contenido centrado */
+.app-hero,
+.app-panel {
+  padding-left: max(var(--space-lg), calc((100% - 520px) / 2));
+  padding-right: max(var(--space-lg), calc((100% - 520px) / 2));
+}
+.app-panel { padding-left: max(var(--space-md), calc((100% - 540px) / 2)); padding-right: max(var(--space-md), calc((100% - 540px) / 2)); }

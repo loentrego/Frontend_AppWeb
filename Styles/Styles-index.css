@@ -121,3 +121,15 @@
 
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
 @keyframes panel-up { from { transform: translateY(40px); opacity: 0.6; } }
+
+/* ============ RESPONSIVE: contenido centrado en pantallas anchas ============ */
+.login-hero,
+.login-panel {
+  padding-left: max(var(--space-lg), calc((100% - 440px) / 2));
+  padding-right: max(var(--space-lg), calc((100% - 440px) / 2));
+}
+
+/* Pantallas muy bajitas (celular horizontal): franja más compacta */
+@media (max-height: 520px) {
+  .login-hero { min-height: 0; gap: var(--space-md); padding-top: var(--space-lg); }
+}

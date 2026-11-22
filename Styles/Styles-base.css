@@ -42,6 +42,7 @@
   --toast-text: #FFFFFF;
   --chip-bg: #17104A;
   --chip-text: #FFFFFF;
+  --hero-glow: rgba(90, 72, 214, 0.65);
   --hero-from: var(--brand-azul);
   --hero-to: var(--brand-azul-oscuro);
 
@@ -85,15 +86,15 @@
 
 /* ---------- Tema oscuro ("Día" de noche): misma marca, superficies profundas ---------- */
 :root[data-theme="dark"] {
-  --bg-page: #0E0A2E;
-  --bg-surface: #18134A;
-  --bg-subtle: #211A5A;
-  --bg-input: #130E3C;
-  --border-subtle: rgba(255, 255, 255, 0.09);
-  --border-strong: rgba(255, 255, 255, 0.18);
-  --text-primary: #EEEBFF;
-  --text-secondary: #A9A3D9;
-  --text-placeholder: #6F69A3;
+  --bg-page: #1A1550;
+  --bg-surface: #231C60;
+  --bg-subtle: #2B246C;
+  --bg-input: #1D1756;
+  --border-subtle: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.20);
+  --text-primary: #ECE9FF;
+  --text-secondary: #B3ADE0;
+  --text-placeholder: #8580B8;
   --focus-ring: rgba(181, 219, 46, 0.22);
   --danger: #FF7A88;
   --danger-dim: rgba(255, 122, 136, 0.12);
@@ -102,8 +103,9 @@
   --toast-text: #120C52;
   --chip-bg: var(--brand-lima);
   --chip-text: var(--brand-lima-ink);
-  --hero-from: #2A1C92;
-  --hero-to: #150F4D;
+  --hero-glow: rgba(90, 72, 214, 0.28);
+  --hero-from: #2C2387;
+  --hero-to: #1E1862;
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 10px 24px -14px rgba(0, 0, 0, 0.7);
   --shadow-raised: 0 20px 40px -18px rgba(0, 0, 0, 0.8);
 }
@@ -139,7 +141,7 @@ body {
   background: var(--bg-page);
 }
 
-@media (min-width: 560px) {
+@media (min-width: 560px) and (min-height: 700px) {
   body {
     display: grid;
     place-items: center;
@@ -163,7 +165,7 @@ body {
   position: relative;
   color: var(--text-on-brand);
   background:
-    radial-gradient(80% 60% at 100% 0%, rgba(90, 72, 214, 0.65), transparent 70%),
+    radial-gradient(80% 60% at 100% 0%, var(--hero-glow), transparent 70%),
     linear-gradient(165deg, var(--hero-from) 0%, var(--hero-to) 100%);
   isolation: isolate;
 }
