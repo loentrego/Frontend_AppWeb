@@ -537,3 +537,5 @@
   padding-right: max(var(--space-lg), calc((100% - 520px) / 2));
 }
 .app-panel { padding-left: max(var(--space-md), calc((100% - 540px) / 2)); padding-right: max(var(--space-md), calc((100% - 540px) / 2)); }
+.stat-split .stat { padding-left: var(--space-sm); padding-right: var(--space-xs); min-width: 0; }
+.stat-split .stat-label { white-space: normal; line-height: 1.25; }

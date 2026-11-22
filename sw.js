@@ -5,7 +5,7 @@
 //  · API (app.loentrego.com/api) y peticiones que no son GET: nunca se cachean.
 //
 // Al cambiar archivos importantes, sube CACHE_VERSION para limpiar la caché vieja.
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v3';
 const CACHE = `loentrego-app-${CACHE_VERSION}`;
 
 const APP_SHELL = [
@@ -78,7 +78,8 @@ async function networkFirst(request) {
 
 async function staleWhileRevalidate(request) {
   const cache = await caches.open(CACHE);
-  const cached = await cache.match(request, { ignoreSearch: true });
+  // La versión (?v=) forma parte de la clave: al subirla, se descarga lo nuevo.
+  const cached = await cache.match(request);
   const network = fetch(request)
     .then((res) => {
       if (res.ok || res.type === 'opaque') cache.put(request, res.clone());
