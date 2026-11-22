@@ -91,7 +91,8 @@
   -webkit-backdrop-filter: blur(10px) saturate(140%);
           backdrop-filter: blur(10px) saturate(140%);
 }
-.stat-split .stat { padding: var(--space-sm) var(--space-xs) var(--space-sm) var(--space-sm); gap: 4px; }
+.stat-split .stat { padding: var(--space-sm); gap: 4px; align-items: center; justify-content: center; text-align: center; }
+.stat-split .stat-label { justify-content: center; }
 .stat-split .stat + .stat { border-left: 1px dashed rgba(255, 255, 255, 0.2); }
 .stat-value {
   font-family: var(--font-display);
@@ -163,14 +164,19 @@
 
 /* ============ FILTROS (chips) ============ */
 .filters {
+  --fade-l: 0px;
+  --fade-r: 28px;
   display: flex;
   gap: 6px;
-  margin: 0 calc(var(--space-md) * -1);
-  padding: 2px var(--space-md);
+  padding: 2px 0;
   overflow-x: auto;
   scrollbar-width: none;
   scroll-snap-type: x proximity;
+  -webkit-mask: linear-gradient(90deg, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
+          mask: linear-gradient(90deg, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
 }
+.filters[data-scrolled] { --fade-l: 28px; }
+.filters[data-end] { --fade-r: 0px; }
 .filters::-webkit-scrollbar { display: none; }
 .filter-chip {
   display: inline-flex;
@@ -323,7 +329,7 @@
 .fab-label { max-width: 160px; overflow: hidden; white-space: nowrap; transition: max-width var(--dur-med) var(--ease), opacity var(--dur-fast) var(--ease); }
 .fab:hover { transform: translateY(-2px); }
 .fab:active { transform: scale(0.96); }
-.fab[data-compact] { padding: 0 17px; }
+.fab[data-compact] { width: 56px; padding: 0; gap: 0; justify-content: center; }
 .fab[data-compact] .fab-label { max-width: 0; opacity: 0; }
 @media (max-width: 559px), (max-height: 699px) { .fab { position: fixed; } }
 
@@ -503,3 +509,6 @@
 
 /* Los avisos van por encima del botón flotante */
 .app .toast-region { bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+/* Etiquetas que ocupan dos líneas: el punto acompaña al texto centrado */
+.stat-split .stat-label { display: block; text-align: center; }
+.stat-split .stat-label .dot { display: inline-block; margin-right: 5px; vertical-align: 1px; }

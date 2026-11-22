@@ -236,7 +236,7 @@
   }
 
   function sheetOpened(overlay) {
-    const parts = $$('.ticket, .account-header, .sheet-title, .sheet-sub, .sheet-section-label, .detail-list, .pdf-card, .settings-group, .sheet-action, .order-form > *, .reason-list > *', overlay);
+    const parts = $$('.ticket, .job-where, .quick-actions, .swipe, .fail-btn, .account-header, .sheet-title, .sheet-sub, .sheet-section-label, .detail-list, .pdf-card, .settings-group, .sheet-action, .order-form > *, .reason-list > *', overlay);
     if (!parts.length) return;
     gsap.fromTo(parts, { y: 16, autoAlpha: 0 },
       { y: 0, autoAlpha: 1, duration: 0.55, ease: 'power3.out', stagger: 0.035, delay: 0.08, overwrite: true, clearProps: 'transform' });

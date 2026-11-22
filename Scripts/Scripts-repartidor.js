@@ -1,19 +1,35 @@
 // ============ PANEL DEL REPARTIDOR ============
 // Usa el núcleo compartido (Scripts-app.js → window.LE). Los cambios de
 // estado se guardan en los mismos datos de prueba que ve el comercio.
+//
+// Muestra TODOS los pedidos asignados a su perfil (sin recomendar uno).
+// Al tocar un pedido se abre su hoja con todas las acciones.
 (() => {
   'use strict';
   const { $, $$, ZONAS, ESTADOS, FINALES, MOTIVOS, money, formatPhone, escapeHTML, mapsUrl, waUrl,
-          store, statusPill, timelineHTML, toast, openSheet, closeSheet, on } = window.LE;
+          store, statusPill, trackHTML, timelineHTML, toast, openSheet, closeSheet, on } = window.LE;
 
   const COMERCIO = { nombre: 'Tienda Central', direccion: 'Cra 13 #45-20, Chapinero', zona: 'bogota', telefono: '3152004567' };
 
-  // Orden de la ruta: lo que ya va en camino primero, luego lo recogido, luego lo por recoger
-  const PRIORIDAD = { en_camino: 0, recogido: 1, por_recoger: 2 };
-  const ruta = (all) => all.filter((o) => !FINALES.includes(o.estado))
-    .sort((a, b) => PRIORIDAD[a.estado] - PRIORIDAD[b.estado] || a.codigo.localeCompare(b.codigo));
-  const hechas = (all) => all.filter((o) => FINALES.includes(o.estado))
-    .sort((a, b) => (b.historial.at(-1)?.[1] || '').localeCompare(a.historial.at(-1)?.[1] || ''));
+  // Filtros
+  const enCurso = (o) => o.estado === 'recogido' || o.estado === 'en_camino';
+  const FILTROS = {
+    pendientes: (o) => !FINALES.includes(o.estado),
+    por_recoger: (o) => o.estado === 'por_recoger',
+    curso: enCurso,
+    completados: (o) => FINALES.includes(o.estado),
+    todos: () => true,
+  };
+  const VACIOS = {
+    pendientes: ['¡Ruta completada!', 'No tienes pedidos pendientes.'],
+    por_recoger: ['Nada por recoger', 'Ya recogiste todos tus pedidos.'],
+    curso: ['Nada en camino', 'Desliza "salir a entregar" en un pedido recogido.'],
+    completados: ['Aún sin completar', 'Tus entregas del día aparecerán aquí.'],
+    todos: ['Sin pedidos asignados', 'Cuando te asignen pedidos aparecerán aquí.'],
+  };
+  // Orden: por código (orden de asignación); los completados al final
+  const ordenar = (list) => [...list].sort((a, b) =>
+    (FINALES.includes(a.estado) - FINALES.includes(b.estado)) || a.codigo.localeCompare(b.codigo));
 
   // Qué hace el repartidor en cada estado
   const PASO = {
@@ -29,7 +45,10 @@
     arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
   };
 
-  // ---------- Render ----------
+  let filtro = 'pendientes';
+  let currentId = null;
+
+  // ---------- Encabezado ----------
   function renderHero(all) {
     const done = all.filter((o) => o.estado === 'entregado');
     const pendientes = all.filter((o) => !FINALES.includes(o.estado));
@@ -41,92 +60,105 @@
     };
     $$('[data-stat]').forEach((el) => { el.textContent = v[el.dataset.stat] ?? 0; });
     $$('[data-money]').forEach((el) => { el.textContent = money(v[el.dataset.money]); });
-    // Barra del día: un segmento por pedido, coloreado por estado
-    const order = [...hechas(all).reverse(), ...ruta(all)];
-    $('#day-bar').innerHTML = order.map((o) => `<i data-tono="${ESTADOS[o.estado].tono}"></i>`).join('');
+    $('#day-bar').innerHTML = ordenar(all).reverse()
+      .sort((a, b) => FINALES.includes(b.estado) - FINALES.includes(a.estado))
+      .map((o) => `<i data-tono="${ESTADOS[o.estado].tono}"></i>`).join('');
   }
 
-  function nextCardHTML(o, idx, total) {
-    const paso = PASO[o.estado];
+  // ---------- Lista de pedidos ----------
+  function jobHTML(o) {
     const recoger = o.estado === 'por_recoger';
-    const destino = recoger ? COMERCIO : o;
-    const titulo = recoger ? COMERCIO.nombre : o.nombre;
-    const tel = recoger ? COMERCIO.telefono : o.telefono;
-    const cobro = o.cobro > 0
-      ? `<div class="cash"><span>${recoger ? 'Cobrarás al entregar' : 'Cobrar al cliente'}</span><strong>${money(o.cobro)}</strong></div>`
-      : `<div class="cash paid"><span>Pedido ya pagado</span><strong>No cobrar</strong></div>`;
+    const hint = FINALES.includes(o.estado) ? (o.estado === 'entregado' ? 'Entregado' : 'Novedad reportada')
+      : recoger ? `Recoger en ${COMERCIO.nombre}` : 'Entregar al cliente';
+    const cobro = o.cobro > 0 ? `<span class="job-amount">${money(o.cobro)}</span>` : '<span class="job-amount paid">Pagado</span>';
     return `
-      <article class="next-card" data-id="${o.id}" data-estado="${o.estado}">
-        <div class="next-top">${statusPill(o.estado)}<span class="next-code">${o.codigo} · Parada ${idx + 1} de ${total}</span></div>
-        <p class="next-action">${paso.accion}</p>
-        <h3 class="next-name">${escapeHTML(titulo)}</h3>
-        <p class="next-address">${escapeHTML(destino.direccion)} <span class="zone-tag">${ZONAS[destino.zona]?.nombre || ''}</span></p>
-        ${recoger ? `<p class="next-for">Para: <b>${escapeHTML(o.nombre)}</b> · ${escapeHTML(o.direccion)}</p>` : ''}
-        ${!recoger && o.notas ? `<p class="next-note">${escapeHTML(o.notas)}</p>` : ''}
-        ${cobro}
-        <div class="quick-actions">
-          <a class="quick" href="tel:+57${tel}">${icon.phone}<span>Llamar</span></a>
-          <a class="quick" href="${waUrl(tel)}" target="_blank" rel="noopener">${icon.wa}<span>WhatsApp</span></a>
-          <a class="quick" href="${mapsUrl(destino)}" target="_blank" rel="noopener">${icon.map}<span>Cómo llegar</span></a>
-        </div>
-        <div class="swipe" data-to="${paso.a}">
-          <span class="swipe-fill" aria-hidden="true"></span>
-          <span class="swipe-label">${paso.swipe}</span>
-          <button type="button" class="swipe-knob" aria-label="${paso.swipe.replace('Desliza: ', 'Confirmar: ')}">${icon.arrow}</button>
-        </div>
-        ${o.estado === 'en_camino' ? '<button type="button" class="btn btn-ghost btn-block fail-btn" data-action="open-fail">No se pudo entregar</button>' : ''}
-      </article>`;
-  }
-
-  function stopHTML(o, i, current) {
-    const recoger = o.estado === 'por_recoger';
-    return `
-      <li class="stop-item${current ? ' current' : ''}" data-estado="${o.estado}">
-        <button type="button" class="stop-btn" data-action="open-stop" data-id="${o.id}" aria-haspopup="dialog">
-          <span class="stop-num" aria-hidden="true">${FINALES.includes(o.estado) ? (o.estado === 'entregado' ? '✓' : '!') : i + 1}</span>
-          <span class="stop-info">
-            <span class="stop-name">${escapeHTML(o.nombre)}</span>
-            <span class="stop-sub">${recoger ? 'Recoger en ' + COMERCIO.nombre : escapeHTML(o.direccion)} · ${ZONAS[o.zona]?.nombre || ''}</span>
+      <li>
+        <button type="button" class="order-item job-item" data-action="open-job" data-id="${o.id}" data-estado="${o.estado}" aria-haspopup="dialog">
+          <span class="job-main">
+            <span class="job-hint">${hint}</span>
+            <span class="job-name">${escapeHTML(o.nombre)}</span>
+            <span class="job-sub">${escapeHTML(o.direccion)} · ${ZONAS[o.zona]?.nombre || ''}</span>
           </span>
-          <span class="stop-side">${o.cobro > 0 ? `<span class="stop-amount">${money(o.cobro)}</span>` : ''}${statusPill(o.estado)}</span>
+          <span class="job-side">${cobro}<span class="job-code">${o.codigo}</span></span>
+          <span class="job-track">${trackHTML(o)}${statusPill(o.estado)}</span>
         </button>
       </li>`;
   }
 
-  let lastNextId = null;
-  function render() {
+  function render({ animate = false } = {}) {
     const all = store.all();
     renderHero(all);
-    const r = ruta(all);
-    const h = hechas(all);
+    const counts = Object.fromEntries(Object.keys(FILTROS).map((k) => [k, all.filter(FILTROS[k]).length]));
+    $$('[data-count]').forEach((el) => { el.textContent = counts[el.dataset.count] ?? 0; });
 
-    const next = r[0];
-    const slot = $('#next-slot');
-    if (next) {
-      slot.innerHTML = nextCardHTML(next, 0, r.length);
-      $('#next-meta').textContent = `${r.length} pendiente${r.length === 1 ? '' : 's'}`;
-      bindSwipe($('.swipe', slot), next);
-      if (lastNextId && lastNextId !== next.id) window.LoEntregoMotion?.nextChanged($('.next-card', slot));
-      lastNextId = next.id;
-    } else {
-      const cobrado = all.filter((o) => o.estado === 'entregado').reduce((s, o) => s + (o.cobro || 0), 0);
-      slot.innerHTML = `
-        <div class="next-card route-done">
-          <span class="isotipo isotipo-done" aria-hidden="true"></span>
-          <h3 class="next-name">¡Ruta completada!</h3>
-          <p class="next-address">Entrega <b>${money(cobrado)}</b> en efectivo a ${COMERCIO.nombre}.</p>
-        </div>`;
-      $('#next-meta').textContent = '';
-      lastNextId = null;
-    }
+    const list = $('#job-list');
+    const visibles = ordenar(all.filter(FILTROS[filtro]));
+    list.innerHTML = visibles.map(jobHTML).join('');
+    $('#jobs-empty').hidden = visibles.length > 0;
+    const cobrado = all.filter((o) => o.estado === 'entregado').reduce((s, o) => s + (o.cobro || 0), 0);
+    const [t, sub] = VACIOS[filtro];
+    $('#empty-title').textContent = t;
+    $('#empty-sub').textContent = filtro === 'pendientes' && cobrado ? `Entrega ${money(cobrado)} en efectivo a ${COMERCIO.nombre}.` : sub;
 
-    $('#stop-list').innerHTML = r.map((o, i) => stopHTML(o, i, i === 0)).join('');
-    $('#route-count').textContent = r.length;
-    $('#done-list').innerHTML = h.map((o, i) => stopHTML(o, i, false)).join('');
-    $('#done-count').textContent = h.length;
-    $('#done-group').hidden = h.length === 0;
+    if (animate) window.LoEntregoMotion?.listChanged($$('.job-item', list));
+    if (currentId && $('#sheet-job').dataset.state === 'open') renderJob(currentId);
+  }
 
-    if (currentStop && $('#sheet-stop').dataset.state === 'open') renderStop(currentStop);
+  // ---------- Hoja del pedido (todas las acciones) ----------
+  function renderJob(id) {
+    const o = store.get(id);
+    if (!o) return;
+    const paso = PASO[o.estado];
+    const recoger = o.estado === 'por_recoger';
+    const destino = recoger ? COMERCIO : o;
+    const tel = recoger ? COMERCIO.telefono : o.telefono;
+    const finalizado = FINALES.includes(o.estado);
+
+    $('#job-detail').innerHTML = `
+      <div class="ticket">
+        <div>${statusPill(o.estado)}<span class="ticket-code">${o.codigo}</span></div>
+        <p class="ticket-kicker">${paso ? paso.accion : (o.estado === 'entregado' ? 'Entregado a' : 'No entregado a')}</p>
+        <h2 class="ticket-name" id="job-name">${escapeHTML(recoger ? COMERCIO.nombre : o.nombre)}</h2>
+        <p class="ticket-amount"><span>${o.cobro > 0 ? (recoger ? 'Cobrarás al entregar' : 'Cobrar al cliente') : 'Pedido ya pagado'}</span> <strong>${o.cobro > 0 ? money(o.cobro) : 'No cobrar'}</strong></p>
+      </div>
+
+      <div class="job-where">
+        <p class="job-address">${escapeHTML(destino.direccion)} <span class="zone-tag">${ZONAS[destino.zona]?.nombre || ''}</span></p>
+        ${recoger ? `<p class="job-for">Para: <b>${escapeHTML(o.nombre)}</b> · ${escapeHTML(o.direccion)}</p>` : ''}
+        ${!recoger && o.notas ? `<p class="job-note">${escapeHTML(o.notas)}</p>` : ''}
+      </div>
+
+      ${finalizado ? '' : `
+      <div class="quick-actions">
+        <a class="quick" href="tel:+57${tel}">${icon.phone}<span>Llamar</span></a>
+        <a class="quick" href="${waUrl(tel)}" target="_blank" rel="noopener">${icon.wa}<span>WhatsApp</span></a>
+        <a class="quick" href="${mapsUrl(destino)}" target="_blank" rel="noopener">${icon.map}<span>Cómo llegar</span></a>
+      </div>
+      <div class="swipe" data-to="${paso.a}">
+        <span class="swipe-fill" aria-hidden="true"></span>
+        <span class="swipe-label">${paso.swipe}</span>
+        <button type="button" class="swipe-knob" aria-label="${paso.swipe.replace('Desliza: ', 'Confirmar: ')}">${icon.arrow}</button>
+      </div>
+      ${o.estado === 'en_camino' ? '<button type="button" class="btn btn-ghost btn-block fail-btn" data-action="open-fail">No se pudo entregar</button>' : ''}`}
+
+      <span class="sheet-section-label">Seguimiento</span>
+      <div class="detail-list">${timelineHTML(o)}</div>
+
+      <span class="sheet-section-label">Datos del cliente</span>
+      <dl class="detail-list">
+        <div class="detail-row"><div><dt>Recibe</dt><dd>${escapeHTML(o.nombre)}</dd></div></div>
+        <div class="detail-row"><div><dt>Celular</dt><dd><a href="tel:+57${o.telefono}">${formatPhone(o.telefono)}</a></dd></div></div>
+        <div class="detail-row"><div><dt>Dirección de entrega</dt><dd>${escapeHTML(o.direccion)} · ${ZONAS[o.zona]?.nombre || ''}</dd></div></div>
+        ${o.estado === 'no_entregado' ? `<div class="detail-row"><div><dt>Motivo</dt><dd>${MOTIVOS[o.motivo] || '—'}</dd></div></div>` : ''}
+      </dl>`;
+
+    if (!finalizado) bindSwipe($('#job-detail .swipe'), o);
+  }
+
+  function openJob(id) {
+    currentId = id;
+    renderJob(id);
+    openSheet('sheet-job');
   }
 
   // ---------- Deslizar para confirmar ----------
@@ -142,11 +174,7 @@
       fill.style.transform = `scaleX(${(x + knob.offsetWidth) / swipe.offsetWidth})`;
       swipe.style.setProperty('--p', max ? x / max : 0);
     };
-    const reset = () => {
-      swipe.classList.add('snap');
-      setX(0);
-      setTimeout(() => swipe.classList.remove('snap'), 300);
-    };
+    const reset = () => { swipe.classList.add('snap'); setX(0); setTimeout(() => swipe.classList.remove('snap'), 300); };
     const complete = () => {
       swipe.classList.add('snap', 'done');
       setX(max);
@@ -162,23 +190,18 @@
       swipe.classList.remove('snap');
     });
     knob.addEventListener('pointermove', (e) => { if (dragging) setX(e.clientX - startX); });
-    const end = () => {
-      if (!dragging) return;
-      dragging = false;
-      if (x >= max * 0.85) complete(); else reset();
-    };
+    const end = () => { if (!dragging) return; dragging = false; if (x >= max * 0.85) complete(); else reset(); };
     knob.addEventListener('pointerup', end);
     knob.addEventListener('pointercancel', end);
     // Teclado / lectores de pantalla: Enter o Espacio confirman
-    knob.addEventListener('click', (e) => {
-      if (e.detail === 0) { max = swipe.offsetWidth - knob.offsetWidth - 8; complete(); }
-    });
+    knob.addEventListener('click', (e) => { if (e.detail === 0) { max = swipe.offsetWidth - knob.offsetWidth - 8; complete(); } });
   }
 
   async function advance(order, estado) {
     const o = store.setEstado(order.id, estado);
     if (!o) return;
     if (estado === 'entregado') {
+      closeSheet($('#sheet-job'));
       $('#done-msg').textContent = o.cobro > 0 ? `¡Entregado! +${money(o.cobro)}` : '¡Entregado!';
       await window.LoEntregoMotion?.celebrate($('#done-layer'));
       toast(`Entregado · ${o.codigo}`);
@@ -188,12 +211,9 @@
   }
 
   // ---------- No se pudo entregar ----------
-  let failId = null;
   function openFail() {
-    const card = $('.next-card[data-id]');
-    if (!card) return;
-    failId = card.dataset.id;
-    const o = store.get(failId);
+    if (!currentId) return;
+    const o = store.get(currentId);
     $('#fail-sub').textContent = `${o.codigo} · ${o.nombre}. Le avisaremos al comercio.`;
     $('#reason-options').innerHTML = Object.entries(MOTIVOS).map(([k, v]) => `
       <label class="reason"><input type="radio" name="motivo" value="${k}"><span>${v}</span></label>`).join('');
@@ -201,33 +221,16 @@
     openSheet('sheet-fail');
   }
 
-  // ---------- Detalle de parada ----------
-  let currentStop = null;
-  function renderStop(id) {
-    const o = store.get(id);
-    if (!o) return;
-    $('#stop-detail').innerHTML = `
-      <div class="ticket">
-        <div>${statusPill(o.estado)}<span class="ticket-code">${o.codigo}</span></div>
-        <h2 class="ticket-name" id="sd-nombre">${escapeHTML(o.nombre)}</h2>
-        <p class="ticket-amount"><span>${o.cobro > 0 ? 'Cobrar al cliente' : 'Pedido ya pagado'}</span> <strong>${money(o.cobro)}</strong></p>
-      </div>
-      <span class="sheet-section-label">Seguimiento</span>
-      <div class="detail-list">${timelineHTML(o)}</div>
-      <span class="sheet-section-label">Entrega</span>
-      <dl class="detail-list">
-        <div class="detail-row"><div><dt>Dirección</dt><dd><a href="${mapsUrl(o)}" target="_blank" rel="noopener">${escapeHTML(o.direccion)}</a></dd></div></div>
-        <div class="detail-row"><div><dt>Zona</dt><dd>${ZONAS[o.zona]?.nombre || '—'}</dd></div></div>
-        <div class="detail-row"><div><dt>Celular</dt><dd><a href="tel:+57${o.telefono}">${formatPhone(o.telefono)}</a></dd></div></div>
-        <div class="detail-row"><div><dt>Notas</dt><dd>${escapeHTML(o.notas) || 'Sin notas'}</dd></div></div>
-        ${o.estado === 'no_entregado' ? `<div class="detail-row"><div><dt>Motivo</dt><dd>${MOTIVOS[o.motivo] || '—'}</dd></div></div>` : ''}
-      </dl>`;
+  function setFilter(f) {
+    filtro = f;
+    $$('[data-action="filter"]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === f)));
   }
 
   // ---------- Acciones ----------
+  on('open-job', (el) => openJob(el.dataset.id));
   on('open-fail', openFail);
-  on('open-stop', (el) => { currentStop = el.dataset.id; renderStop(currentStop); openSheet('sheet-stop'); });
-  document.addEventListener('le:orders', render);
+  on('filter', (el) => { setFilter(el.dataset.filter); render({ animate: true }); });
+  document.addEventListener('le:orders', () => render());
 
   document.addEventListener('DOMContentLoaded', () => {
     render();
@@ -235,9 +238,10 @@
     form.addEventListener('change', () => { $('#fail-submit').disabled = !form.motivo.value; });
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      if (!failId || !form.motivo.value) return;
-      const o = store.setEstado(failId, 'no_entregado', { motivo: form.motivo.value });
+      if (!currentId || !form.motivo.value) return;
+      const o = store.setEstado(currentId, 'no_entregado', { motivo: form.motivo.value });
       closeSheet($('#sheet-fail'));
+      closeSheet($('#sheet-job'));
       toast(`Novedad reportada · ${o.codigo}`, 'error');
     });
   });

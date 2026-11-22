@@ -211,6 +211,19 @@
     if (open) closeSheet(open);
   });
 
+  // Carruseles de filtros: el degradado aparece solo del lado donde hay más contenido
+  function bindFades(el) {
+    const update = () => {
+      const max = el.scrollWidth - el.clientWidth;
+      el.toggleAttribute('data-scrolled', el.scrollLeft > 2);
+      el.toggleAttribute('data-end', el.scrollLeft >= max - 2);
+    };
+    el.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
+  document.addEventListener('DOMContentLoaded', () => $$('.filters').forEach(bindFades));
+
   window.LE = {
     $, $$, ZONAS, ESTADOS, FLUJO, FINALES, MOTIVOS,
     money, parseMoney, digits, formatPhone, isPhoneCO, initials, escapeHTML, now, mapsUrl, waUrl,

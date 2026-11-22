@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../Styles/Styles-base.css?v=20261122k">
-<link rel="stylesheet" href="../Styles/Styles-app.css?v=20261122k">
-<link rel="stylesheet" href="../Styles/Styles-repartidor.css?v=20261122k">
+<link rel="stylesheet" href="../Styles/Styles-base.css?v=20261122l">
+<link rel="stylesheet" href="../Styles/Styles-app.css?v=20261122l">
+<link rel="stylesheet" href="../Styles/Styles-repartidor.css?v=20261122l">
 <link rel="icon" href="../img/icons/icon-192.png">
 <link rel="manifest" href="../manifest.webmanifest">
 <link rel="apple-touch-icon" href="../img/icons/apple-touch-icon.png">
@@ -18,7 +18,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="LoEntrego">
-<script src="../Scripts/Scripts-theme.js?v=20261122k"></script>
+<script src="../Scripts/Scripts-theme.js?v=20261122l"></script>
 </head>
 <body>
 
@@ -61,29 +61,28 @@
 
     <div class="app-panel">
 
-      <!-- ============ SIGUIENTE PARADA ============ -->
-      <section aria-labelledby="next-title">
+      <!-- ============ MIS PEDIDOS ============ -->
+      <section class="jobs" aria-labelledby="jobs-title">
         <div class="section-head">
-          <h2 class="section-title" id="next-title">Siguiente parada</h2>
-          <span class="section-meta" id="next-meta"></span>
+          <h2 class="section-title" id="jobs-title">Mis pedidos</h2>
+          <span class="count-chip" data-count="todos">0</span>
         </div>
-        <div id="next-slot"></div>
-      </section>
 
-      <!-- ============ RUTA DE HOY ============ -->
-      <section aria-labelledby="route-title">
-        <div class="section-head">
-          <h2 class="section-title" id="route-title">Ruta de hoy</h2>
-          <span class="count-chip" id="route-count">0</span>
+        <div class="filters" role="toolbar" aria-label="Filtrar mis pedidos">
+          <button type="button" class="filter-chip" data-action="filter" data-filter="pendientes" aria-pressed="true">Pendientes <span class="n" data-count="pendientes">0</span></button>
+          <button type="button" class="filter-chip" data-action="filter" data-filter="por_recoger" aria-pressed="false">Por recoger <span class="n" data-count="por_recoger">0</span></button>
+          <button type="button" class="filter-chip" data-action="filter" data-filter="curso" aria-pressed="false">En camino <span class="n" data-count="curso">0</span></button>
+          <button type="button" class="filter-chip" data-action="filter" data-filter="completados" aria-pressed="false">Completados <span class="n" data-count="completados">0</span></button>
+          <button type="button" class="filter-chip" data-action="filter" data-filter="todos" aria-pressed="false">Todos <span class="n" data-count="todos">0</span></button>
         </div>
-        <ol class="stop-list" id="stop-list"></ol>
 
-        <details class="done-group" id="done-group">
-          <summary><span>Completadas</span> <span class="count-chip" id="done-count">0</span>
-            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-          </summary>
-          <ol class="stop-list done" id="done-list"></ol>
-        </details>
+        <ul class="job-list" id="job-list" role="list"></ul>
+
+        <div class="empty-state" id="jobs-empty" hidden>
+          <span class="isotipo isotipo-empty" aria-hidden="true"></span>
+          <p class="empty-title" id="empty-title">¡Ruta completada!</p>
+          <p class="empty-sub" id="empty-sub"></p>
+        </div>
       </section>
 
     </div>
@@ -119,14 +118,14 @@
     </section>
   </div>
 
-  <!-- ============ HOJA: DETALLE DE PARADA ============ -->
-  <div class="sheet-overlay" id="sheet-stop" data-state="closed" data-action="close-sheet-bg">
-    <section class="sheet has-ticket" role="dialog" aria-modal="true" aria-labelledby="sd-nombre" tabindex="-1">
+  <!-- ============ HOJA: PEDIDO (acciones del repartidor) ============ -->
+  <div class="sheet-overlay" id="sheet-job" data-state="closed" data-action="close-sheet-bg">
+    <section class="sheet has-ticket" role="dialog" aria-modal="true" aria-labelledby="job-name" tabindex="-1">
       <span class="sheet-handle" aria-hidden="true"></span>
       <button type="button" class="icon-btn sheet-close" data-action="close-sheet" aria-label="Cerrar">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
       </button>
-      <div id="stop-detail"></div>
+      <div id="job-detail"></div>
     </section>
   </div>
 
@@ -170,13 +169,13 @@
   <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
 </div>
 
-<script src="../Scripts/Scripts-app.js?v=20261122k"></script>
-<script src="../Scripts/Scripts-repartidor.js?v=20261122k"></script>
+<script src="../Scripts/Scripts-app.js?v=20261122l"></script>
+<script src="../Scripts/Scripts-repartidor.js?v=20261122l"></script>
 <script src="../libs/gsap/gsap.min.js"></script>
 <script src="../libs/gsap/ScrollTrigger.min.js"></script>
 <script src="../libs/gsap/SplitText.min.js"></script>
 <script src="../libs/gsap/DrawSVGPlugin.min.js"></script>
-<script src="../Scripts/Scripts-motion.js?v=20261122k"></script>
-<script src="../Scripts/Scripts-pwa.js?v=20261122k"></script>
+<script src="../Scripts/Scripts-motion.js?v=20261122l"></script>
+<script src="../Scripts/Scripts-pwa.js?v=20261122l"></script>
 </body>
 </html>
