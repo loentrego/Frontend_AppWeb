@@ -5,30 +5,32 @@
 //  · API (app.loentrego.com/api) y peticiones que no son GET: nunca se cachean.
 //
 // Al cambiar archivos importantes, sube CACHE_VERSION para limpiar la caché vieja.
-const CACHE_VERSION = 'v5';
+const CACHE_VERSION = 'v6';
 const CACHE = `loentrego-app-${CACHE_VERSION}`;
 
 const APP_SHELL = [
   './',
   './index.html',
   './Pages/Pages-stores.html',
+  './Pages/Pages-repartidor.html',
   './Styles/Styles-base.css',
   './Styles/Styles-index.css',
+  './Styles/Styles-app.css',
   './Styles/Styles-stores.css',
+  './Styles/Styles-repartidor.css',
   './Scripts/Scripts-theme.js',
   './Scripts/Scripts-index.js',
+  './Scripts/Scripts-app.js',
   './Scripts/Scripts-stores.js',
-  './Scripts/Scripts-pwa.js',
+  './Scripts/Scripts-repartidor.js',
   './Scripts/Scripts-motion.js',
+  './Scripts/Scripts-pwa.js',
   './libs/gsap/gsap.min.js',
   './libs/gsap/ScrollTrigger.min.js',
   './libs/gsap/SplitText.min.js',
   './libs/gsap/DrawSVGPlugin.min.js',
-  './libs/gsap/MotionPathPlugin.min.js',
   './img/LoEntrego2026-wordmark.png',
   './img/isotipo.png',
-  './img/Minilogo-transparencia.png',
-  './img/Minilogo-loentrego-2026.png',
   './img/icons/icon-192.png',
   './img/icons/icon-512.png',
   './manifest.webmanifest',

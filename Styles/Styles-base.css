@@ -38,6 +38,8 @@
   --danger: #D63A4C;
   --danger-dim: #FDECEE;
   --danger-line: #F6C3CA;
+  --move: #2160C4;
+  --move-dim: #E2EBFB;
   --toast-bg: #17104A;
   --toast-text: #FFFFFF;
   --chip-bg: #17104A;
@@ -101,6 +103,8 @@
   --danger: #FF7A88;
   --danger-dim: rgba(255, 122, 136, 0.12);
   --danger-line: rgba(255, 122, 136, 0.4);
+  --move: #8FD3FF;
+  --move-dim: rgba(143, 211, 255, 0.13);
   --toast-bg: #EEEBFF;
   --toast-text: #120C52;
   --chip-bg: var(--brand-lima);
@@ -172,7 +176,7 @@ body {
   }
 }
 
-/* ---------- Zona de marca (franja azul con motivo de ruta) ---------- */
+/* ---------- Zona de marca (franja azul) ---------- */
 .brand-zone {
   position: relative;
   color: var(--text-on-brand);
@@ -181,27 +185,44 @@ body {
     linear-gradient(165deg, var(--hero-from) 0%, var(--hero-to) 100%);
   isolation: isolate;
 }
-.route-art {
+/* ---------- Pila de cajas: animación de marca en la franja ----------
+   La caja de arriba sale "despachada" y una nueva cae sobre la pila
+   (la mueve Scripts-motion.js). Sin JS se ve una pila quieta. */
+.stack-art {
   position: absolute;
-  inset: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
+  right: max(var(--space-lg), calc((100% - 440px) / 2));
+  bottom: calc(28px + var(--space-lg));
+  z-index: 0;
+  width: 92px;
+  height: 128px;
   pointer-events: none;
 }
-.route-art .route-line {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.22);
-  stroke-width: 2;
-  stroke-dasharray: 2 9;
-  stroke-linecap: round;
-  animation: route-move 1.6s linear infinite;
+.stack-art .stack-shadow {
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 84px;
+  height: 12px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(6, 3, 30, 0.45), transparent);
 }
-.route-art .route-stop { fill: var(--brand-azul-oscuro); stroke: rgba(255, 255, 255, 0.35); stroke-width: 2; }
-.route-art .route-dot { fill: var(--accent); }
-.route-art .route-halo { fill: var(--accent); opacity: 0.22; transform-box: fill-box; transform-origin: center; animation: halo 2.4s var(--ease) infinite; }
-@keyframes route-move { to { stroke-dashoffset: -22; } }
-@keyframes halo { 0% { transform: scale(0.6); opacity: 0.35; } 100% { transform: scale(1.8); opacity: 0; } }
+.stack-art .stack-box {
+  position: absolute;
+  left: 50%;
+  background-color: #fff;
+  filter: drop-shadow(0 6px 10px rgba(6, 3, 30, 0.28));
+}
+.stack-art .b1 { bottom: 0;    width: 58px; margin-left: -29px; }
+.stack-art .b2 { bottom: 54px; width: 46px; margin-left: -20px; }
+.stack-art .b3 { bottom: 97px; width: 34px; margin-left: -19px; }
+.stack-art .speed-line {
+  position: absolute;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--accent);
+  opacity: 0;
+}
 
 /* ---------- Utilidades ---------- */
 .text-accent { color: var(--accent); }
@@ -366,14 +387,6 @@ textarea.field-input { padding: var(--space-sm) var(--space-md); min-height: 84p
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
-
-/* Cometa de luz que recorre la ruta y ondas al llegar (Scripts-motion.js) */
-.route-art .route-comet,
-.route-art .route-comet-glow { fill: none; stroke: var(--accent); stroke-linecap: round; opacity: 0; }
-.route-art .route-comet { stroke-width: 2.25; }
-.route-art .route-comet-glow { stroke-width: 7; }
-.route-art .ripple { fill: none; stroke: var(--accent); stroke-width: 1.5; opacity: 0; }
-.route-art .route-grid { opacity: 0.09; }
 
 /* ---------- Isotipo (la caja): sin fondo, toma el color del tema ---------- */
 :root { --isotipo-color: #12092E; }                 /* sobre claro: versión negra */

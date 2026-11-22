@@ -4,9 +4,12 @@
 
   const API_LOGIN = 'https://app.loentrego.com/api/login';
 
-  // ⚠️ TEMPORAL: acceso de prueba mientras no hay backend.
-  // Entra al panel sin llamar a la API. QUITAR al conectar los endpoints.
-  const DEMO_LOGIN = { usuario: 'demo', password: 'demo123', rol: 'stores' };
+  // ⚠️ TEMPORAL: cuentas de prueba mientras no hay backend.
+  // Entran sin llamar a la API. QUITAR al conectar los endpoints.
+  const DEMO_LOGINS = {
+    demo: { password: 'demo123', rol: 'stores' },           // comercio
+    repartidor: { password: 'reparto123', rol: 'repartidor' }, // repartidor
+  };
 
   const ui = {
     form: document.getElementById('login-form'),
@@ -78,9 +81,10 @@
 
     setLoading(true);
 
-    if (usuario === DEMO_LOGIN.usuario && password === DEMO_LOGIN.password) {
+    const demo = DEMO_LOGINS[usuario.toLowerCase()];
+    if (demo && password === demo.password) {
       localStorage.setItem('auth_token', 'demo');
-      go(`Pages/Pages-${DEMO_LOGIN.rol}.html`);
+      go(`Pages/Pages-${demo.rol}.html`);
       return;
     }
 

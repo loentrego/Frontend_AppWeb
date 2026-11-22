@@ -8,8 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../Styles/Styles-base.css?v=20261122i">
-<link rel="stylesheet" href="../Styles/Styles-stores.css?v=20261122i">
+<link rel="stylesheet" href="../Styles/Styles-base.css?v=20261122k">
+<link rel="stylesheet" href="../Styles/Styles-app.css?v=20261122k">
+<link rel="stylesheet" href="../Styles/Styles-stores.css?v=20261122k">
 <link rel="icon" href="../img/icons/icon-192.png">
 <link rel="manifest" href="../manifest.webmanifest">
 <link rel="apple-touch-icon" href="../img/icons/apple-touch-icon.png">
@@ -17,43 +18,16 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="LoEntrego">
-<script src="../Scripts/Scripts-theme.js?v=20261122i"></script>
+<script src="../Scripts/Scripts-theme.js?v=20261122k"></script>
 </head>
 <body>
 
-<div class="device app">
+<div class="device app" data-role="comercio">
 
   <main class="app-scroll">
 
-    <!-- ============ ZONA DE MARCA: ENCABEZADO + RESUMEN ============ -->
+    <!-- ============ ZONA DE MARCA ============ -->
     <section class="brand-zone app-hero" aria-label="Resumen de hoy">
-      <svg class="route-art" viewBox="0 0 390 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <pattern id="app-route-grid" width="22" height="22" patternUnits="userSpaceOnUse">
-          <circle cx="11" cy="11" r="1.1" fill="#fff"/>
-        </pattern>
-        <radialGradient id="app-route-fade" cx="75%" cy="45%" r="70%">
-          <stop offset="0" stop-color="#fff" stop-opacity="1"/>
-          <stop offset="1" stop-color="#fff" stop-opacity="0"/>
-        </radialGradient>
-        <mask id="app-route-gridmask" maskUnits="userSpaceOnUse"><rect width="390" height="260" fill="url(#app-route-fade)"/></mask>
-        <mask id="app-route-reveal" maskUnits="userSpaceOnUse">
-          <path class="route-mask" d="M-10 210 C 80 210, 110 150, 190 160 S 300 120, 330 60 S 380 10, 410 20" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round"/>
-        </mask>
-      </defs>
-      <g class="route-grid" mask="url(#app-route-gridmask)"><rect x="-22" y="-22" width="434" height="304" fill="url(#app-route-grid)"/></g>
-      <path id="app-route-path" class="route-line" d="M-10 210 C 80 210, 110 150, 190 160 S 300 120, 330 60 S 380 10, 410 20" mask="url(#app-route-reveal)"/>
-      <path class="route-comet-glow" d="M-10 210 C 80 210, 110 150, 190 160 S 300 120, 330 60 S 380 10, 410 20"/>
-      <path class="route-comet" d="M-10 210 C 80 210, 110 150, 190 160 S 300 120, 330 60 S 380 10, 410 20"/>
-      <g class="route-ripples">
-        <circle class="ripple" cx="330" cy="60" r="5"/>
-        <circle class="ripple" cx="330" cy="60" r="5"/>
-        <circle class="ripple" cx="330" cy="60" r="5"/>
-      </g>
-      <circle class="route-halo" cx="330" cy="60" r="12"/>
-      <circle class="route-dot" cx="330" cy="60" r="5"/>
-    </svg>
-
       <header class="app-header">
         <div class="app-header-brand">
           <span class="brand-mark isotipo" aria-hidden="true"></span>
@@ -72,12 +46,12 @@
         </div>
         <div class="stat-split">
           <div class="stat">
-            <span class="stat-value" data-stat="entregado">0</span>
-            <span class="stat-label"><i class="dot dot-ok" aria-hidden="true"></i>Entregados</span>
+            <span class="stat-value" data-stat="curso">0</span>
+            <span class="stat-label"><i class="dot dot-move" aria-hidden="true"></i>En curso</span>
           </div>
           <div class="stat">
-            <span class="stat-value" data-stat="pendiente">0</span>
-            <span class="stat-label"><i class="dot dot-pending" aria-hidden="true"></i>Por entregar</span>
+            <span class="stat-value" data-stat="entregado">0</span>
+            <span class="stat-label"><i class="dot dot-ok" aria-hidden="true"></i>Entregados</span>
           </div>
         </div>
       </div>
@@ -85,30 +59,59 @@
 
     <div class="app-panel">
 
-    <!-- ============ NUEVO PEDIDO ============ -->
-    <section class="card" aria-labelledby="new-order-title">
-      <div class="card-head">
-        <h2 class="card-title" id="new-order-title">Nuevo pedido</h2>
-        <p class="card-sub">Llena los datos y lo recogemos en tu comercio.</p>
-      </div>
+      <!-- ============ PEDIDOS DE HOY ============ -->
+      <section class="orders" aria-labelledby="orders-title">
+        <div class="section-head">
+          <h2 class="section-title" id="orders-title">Pedidos de hoy</h2>
+          <span class="count-chip" data-stat="total">0</span>
+        </div>
+
+        <div class="filters" role="toolbar" aria-label="Filtrar pedidos por estado">
+          <button type="button" class="filter-chip" data-action="filter" data-filter="todos" aria-pressed="true">Todos <span class="n" data-count="todos">0</span></button>
+          <button type="button" class="filter-chip" data-action="filter" data-filter="por_recoger" aria-pressed="false">Por recoger <span class="n" data-count="por_recoger">0</span></button>
+          <button type="button" class="filter-chip" data-action="filter" data-filter="curso" aria-pressed="false">En camino <span class="n" data-count="curso">0</span></button>
+          <button type="button" class="filter-chip" data-action="filter" data-filter="entregado" aria-pressed="false">Entregados <span class="n" data-count="entregado">0</span></button>
+          <button type="button" class="filter-chip" data-action="filter" data-filter="no_entregado" aria-pressed="false">No entregados <span class="n" data-count="no_entregado">0</span></button>
+        </div>
+
+        <ul class="order-list" id="order-list" role="list"></ul>
+
+        <div class="empty-state" id="orders-empty" hidden>
+          <span class="isotipo isotipo-empty" aria-hidden="true"></span>
+          <p class="empty-title" id="empty-title">Aún no tienes pedidos hoy</p>
+          <p class="empty-sub" id="empty-sub">Toca “Nuevo pedido” para crear el primero.</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ============ BOTÓN FLOTANTE ============ -->
+  <button type="button" class="fab" data-action="open-sheet" data-target="sheet-new" aria-haspopup="dialog">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+    <span class="fab-label">Nuevo pedido</span>
+  </button>
+
+  <!-- ============ HOJA: NUEVO PEDIDO ============ -->
+  <div class="sheet-overlay" id="sheet-new" data-state="closed" data-action="close-sheet-bg">
+    <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="new-title" tabindex="-1">
+      <span class="sheet-handle" aria-hidden="true"></span>
+      <button type="button" class="icon-btn sheet-close" data-action="close-sheet" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <h2 class="sheet-title" id="new-title">Nuevo pedido</h2>
+      <p class="sheet-sub">Lo recogemos en tu comercio y lo llevamos hasta tu cliente.</p>
 
       <form class="order-form" id="order-form" novalidate>
+        <fieldset class="field zone-field">
+          <legend class="field-label">Zona de entrega</legend>
+          <div class="zone-options" id="zone-options"></div>
+        </fieldset>
+
         <div class="field">
           <label class="field-label" for="f-direccion">Dirección de entrega</label>
-          <input class="field-input" id="f-direccion" name="direccion" type="text" placeholder="Calle 72 #10-34" autocomplete="street-address" required>
+          <input class="field-input" id="f-direccion" name="direccion" type="text" placeholder="Calle 72 #10-34, apto 501" autocomplete="street-address" required>
           <p class="field-hint" aria-live="polite"></p>
-        </div>
-        <div class="row-2">
-          <div class="field">
-            <label class="field-label" for="f-ciudad">Ciudad</label>
-            <input class="field-input" id="f-ciudad" name="ciudad" type="text" placeholder="Bogotá" value="Bogotá" required>
-            <p class="field-hint" aria-live="polite"></p>
-          </div>
-          <div class="field">
-            <label class="field-label" for="f-cobro">Cobro</label>
-            <input class="field-input" id="f-cobro" name="cobro" type="text" inputmode="numeric" placeholder="$45.000" data-format="money">
-            <p class="field-hint" aria-live="polite"></p>
-          </div>
         </div>
         <div class="field">
           <label class="field-label" for="f-nombre">Nombre de quien recibe</label>
@@ -116,40 +119,43 @@
           <p class="field-hint" aria-live="polite"></p>
         </div>
         <div class="field">
-          <label class="field-label" for="f-telefono">Número de quien recibe</label>
-          <input class="field-input" id="f-telefono" name="telefono" type="tel" inputmode="tel" placeholder="Ej: 300 123 4567" autocomplete="off" required>
+          <label class="field-label" for="f-telefono">Celular de quien recibe</label>
+          <input class="field-input" id="f-telefono" name="telefono" type="tel" inputmode="numeric" placeholder="300 123 4567" autocomplete="off" data-format="phone" required>
           <p class="field-hint" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label class="field-label" for="f-cobro">Valor a cobrar al cliente</label>
+          <input class="field-input" id="f-cobro" name="cobro" type="text" inputmode="numeric" placeholder="$0" data-format="money" aria-describedby="cobro-help">
+          <p class="field-help" id="cobro-help">Contraentrega: el repartidor lo cobra y te lo entrega. Déjalo en $0 si ya está pago.</p>
         </div>
         <div class="field">
           <label class="field-label" for="f-notas">Notas para el repartidor <span class="optional">(opcional)</span></label>
           <textarea class="field-input" id="f-notas" name="notas" rows="2" placeholder="Entregar en portería, preguntar por Sr. Gómez"></textarea>
         </div>
 
+        <div class="order-summary" aria-live="polite">
+          <div><span>Envío a <b id="sum-zona">Bogotá</b></span><strong id="sum-tarifa">$10.000</strong></div>
+          <div><span>El repartidor cobrará</span><strong id="sum-cobro">$0</strong></div>
+        </div>
+
         <button type="submit" class="btn btn-primary btn-block" id="order-submit">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
           <span class="btn-text">Crear pedido</span>
+          <svg class="btn-icon btn-icon-move" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
       </form>
     </section>
+  </div>
 
-    <!-- ============ PEDIDOS DE HOY ============ -->
-    <section class="orders" aria-labelledby="orders-title">
-      <div class="section-head">
-        <h2 class="section-title" id="orders-title">Pedidos de hoy</h2>
-        <span class="count-chip" data-stat="total">0</span>
-      </div>
-
-      <ul class="order-list" id="order-list" role="list"></ul>
-
-      <div class="empty-state" id="orders-empty" hidden>
-        <span class="isotipo isotipo-empty" aria-hidden="true"></span>
-        <p class="empty-title">Aún no tienes pedidos hoy</p>
-        <p class="empty-sub">Crea el primero con el formulario de arriba.</p>
-      </div>
+  <!-- ============ HOJA: DETALLE DEL PEDIDO ============ -->
+  <div class="sheet-overlay" id="sheet-order" data-state="closed" data-action="close-sheet-bg">
+    <section class="sheet has-ticket" role="dialog" aria-modal="true" aria-labelledby="od-nombre" tabindex="-1">
+      <span class="sheet-handle" aria-hidden="true"></span>
+      <button type="button" class="icon-btn sheet-close" data-action="close-sheet" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <div id="order-detail"></div>
     </section>
-
-    </div>
-  </main>
+  </div>
 
   <!-- ============ HOJA: MI CUENTA ============ -->
   <div class="sheet-overlay" id="sheet-account" data-state="closed" data-action="close-sheet-bg">
@@ -158,7 +164,6 @@
       <button type="button" class="icon-btn sheet-close" data-action="close-sheet" aria-label="Cerrar">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
       </button>
-
       <div class="account-header">
         <span class="account-avatar" aria-hidden="true">TC</span>
         <div>
@@ -166,23 +171,13 @@
           <p class="account-role">Comercio · Chapinero</p>
         </div>
       </div>
-
       <dl class="detail-list">
-        <div class="detail-row">
-          <div><dt>Nombre del comercio</dt><dd>Tienda Central</dd></div>
-        </div>
-        <div class="detail-row">
-          <div><dt>Dirección</dt><dd>Cra 13 #45-20, Chapinero, Bogotá</dd></div>
-          <button type="button" class="edit-btn" data-action="edit-field" data-field="direccion" aria-label="Editar dirección"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></button>
-        </div>
-        <div class="detail-row">
-          <div><dt>Celular</dt><dd>315 200 4567</dd></div>
-          <button type="button" class="edit-btn" data-action="edit-field" data-field="celular" aria-label="Editar celular"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></button>
-        </div>
-        <div class="detail-row">
-          <div><dt>Correo</dt><dd>tiendacentral@correo.com</dd></div>
-          <button type="button" class="edit-btn" data-action="edit-field" data-field="correo" aria-label="Editar correo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></button>
-        </div>
+        <div class="detail-row"><div><dt>Dirección de recogida</dt><dd>Cra 13 #45-20, Chapinero, Bogotá</dd></div>
+          <button type="button" class="edit-btn" data-action="edit-field" aria-label="Editar dirección"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></button></div>
+        <div class="detail-row"><div><dt>Celular</dt><dd>315 200 4567</dd></div>
+          <button type="button" class="edit-btn" data-action="edit-field" aria-label="Editar celular"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></button></div>
+        <div class="detail-row"><div><dt>Correo</dt><dd>tiendacentral@correo.com</dd></div>
+          <button type="button" class="edit-btn" data-action="edit-field" aria-label="Editar correo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></button></div>
       </dl>
 
       <div class="settings-group">
@@ -198,67 +193,20 @@
         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 17l-5-5 5-5M5 12h11"/></svg>
         Cerrar sesión
       </button>
-    </section>
-  </div>
-
-  <!-- ============ HOJA: DETALLE DEL PEDIDO ============ -->
-  <div class="sheet-overlay" id="sheet-order" data-state="closed" data-action="close-sheet-bg">
-    <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="od-nombre" tabindex="-1">
-      <span class="sheet-handle" aria-hidden="true"></span>
-      <button type="button" class="icon-btn sheet-close" data-action="close-sheet" aria-label="Cerrar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
-      </button>
-
-      <div class="order-detail-head">
-        <span class="status-pill" id="od-estado" data-status="pendiente">No entregado</span>
-        <h2 class="order-detail-name" id="od-nombre">—</h2>
-        <p class="order-detail-amount"><span>Cobro</span> <strong id="od-cobro">—</strong></p>
-      </div>
-
-      <dl class="detail-list">
-        <div class="detail-row">
-          <div><dt>Dirección de entrega</dt><dd id="od-direccion">—</dd></div>
-          <button type="button" class="edit-btn" data-action="edit-field" data-field="direccion del pedido" aria-label="Editar dirección de entrega"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></button>
-        </div>
-        <div class="detail-row">
-          <div><dt>Ciudad</dt><dd id="od-ciudad">—</dd></div>
-          <button type="button" class="edit-btn" data-action="edit-field" data-field="ciudad" aria-label="Editar ciudad"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></button>
-        </div>
-        <div class="detail-row">
-          <div><dt>Número de quien recibe</dt><dd id="od-telefono">—</dd></div>
-          <button type="button" class="edit-btn" data-action="edit-field" data-field="telefono" aria-label="Editar número de quien recibe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></button>
-        </div>
-        <div class="detail-row">
-          <div><dt>Notas</dt><dd id="od-notas">—</dd></div>
-          <button type="button" class="edit-btn" data-action="edit-field" data-field="notas" aria-label="Editar notas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></button>
-        </div>
-      </dl>
-
-      <div class="pdf-card">
-        <span class="pdf-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
-        </span>
-        <div class="pdf-info">
-          <p class="pdf-name">Guía de envío</p>
-          <p class="pdf-sub">PDF · lista para descargar</p>
-        </div>
-        <button type="button" class="btn btn-primary pdf-download-btn" data-action="download-guide">Descargar</button>
-      </div>
-
-      <button type="button" class="btn btn-danger btn-block sheet-action" data-action="delete-order">Eliminar pedido</button>
+      <button type="button" class="link-btn" data-action="reset-demo">Restablecer datos de prueba</button>
     </section>
   </div>
 
   <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
 </div>
 
-<script src="../Scripts/Scripts-stores.js?v=20261122i"></script>
+<script src="../Scripts/Scripts-app.js?v=20261122k"></script>
+<script src="../Scripts/Scripts-stores.js?v=20261122k"></script>
 <script src="../libs/gsap/gsap.min.js"></script>
 <script src="../libs/gsap/ScrollTrigger.min.js"></script>
 <script src="../libs/gsap/SplitText.min.js"></script>
 <script src="../libs/gsap/DrawSVGPlugin.min.js"></script>
-<script src="../libs/gsap/MotionPathPlugin.min.js"></script>
-<script src="../Scripts/Scripts-motion.js?v=20261122i"></script>
-<script src="../Scripts/Scripts-pwa.js?v=20261122i"></script>
+<script src="../Scripts/Scripts-motion.js?v=20261122k"></script>
+<script src="../Scripts/Scripts-pwa.js?v=20261122k"></script>
 </body>
 </html>
