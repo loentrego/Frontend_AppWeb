@@ -44,7 +44,8 @@
   }
 
   function render({ newId = null, animate = false } = {}) {
-    const all = store.all();
+    // Solo los pedidos de este comercio (el admin ve también los de otros)
+    const all = store.all().filter((o) => (o.comercio || 'Tienda Central') === 'Tienda Central');
     // Stats y contadores
     const counts = Object.fromEntries(Object.keys(FILTROS).map((k) => [k, all.filter(FILTROS[k]).length]));
     const stats = { total: all.length, curso: counts.por_recoger + counts.curso, entregado: counts.entregado };

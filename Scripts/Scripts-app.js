@@ -103,7 +103,10 @@
       return o;
     },
     remove(id) { this.save(this.all().filter((o) => o.id !== id)); },
-    reset() { this.save(structuredClone(SEED)); },
+    reset() {
+      try { localStorage.removeItem('loentrego-demo-extras-v1'); } catch { /* */ } // el admin vuelve a cargar sus pedidos extra
+      this.save(structuredClone(SEED));
+    },
   };
 
   // Otra pestaña (p. ej. el repartidor) cambió los pedidos

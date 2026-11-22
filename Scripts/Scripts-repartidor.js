@@ -86,7 +86,8 @@
   }
 
   function render({ animate = false } = {}) {
-    const all = store.all();
+    // Solo los pedidos asignados a este repartidor (el admin puede reasignarlos)
+    const all = store.all().filter((o) => (o.repartidor || 'r1') === 'r1');
     renderHero(all);
     const counts = Object.fromEntries(Object.keys(FILTROS).map((k) => [k, all.filter(FILTROS[k]).length]));
     $$('[data-count]').forEach((el) => { el.textContent = counts[el.dataset.count] ?? 0; });
