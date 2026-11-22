@@ -185,44 +185,31 @@ body {
     linear-gradient(165deg, var(--hero-from) 0%, var(--hero-to) 100%);
   isolation: isolate;
 }
-/* ---------- Pila de cajas: animación de marca en la franja ----------
-   La caja de arriba sale "despachada" y una nueva cae sobre la pila
-   (la mueve Scripts-motion.js). Sin JS se ve una pila quieta. */
-.stack-art {
+/* ---------- Ruta punteada con cometa de luz (Scripts-motion.js) ----------
+   Va por la esquina superior derecha de la franja: nunca cruza títulos ni texto. */
+.route-art {
   position: absolute;
-  right: max(var(--space-lg), calc((100% - 440px) / 2));
-  bottom: calc(28px + var(--space-lg));
-  z-index: 0;
-  width: 92px;
-  height: 128px;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
-.stack-art .stack-shadow {
-  position: absolute;
-  left: 50%;
-  bottom: -6px;
-  width: 84px;
-  height: 12px;
-  translate: -50% 0;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(6, 3, 30, 0.45), transparent);
+.route-art .route-line {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 2;
+  stroke-dasharray: 2 9;
+  stroke-linecap: round;
 }
-.stack-art .stack-box {
-  position: absolute;
-  left: 50%;
-  background-color: #fff;
-  filter: drop-shadow(0 6px 10px rgba(6, 3, 30, 0.28));
-}
-.stack-art .b1 { bottom: 0;    width: 58px; margin-left: -29px; }
-.stack-art .b2 { bottom: 54px; width: 46px; margin-left: -20px; }
-.stack-art .b3 { bottom: 97px; width: 34px; margin-left: -19px; }
-.stack-art .speed-line {
-  position: absolute;
-  height: 3px;
-  border-radius: 3px;
-  background: var(--accent);
-  opacity: 0;
-}
+.route-art .route-dot { fill: var(--accent); }
+.route-art .route-halo { fill: var(--accent); opacity: 0.2; }
+.route-art .route-comet,
+.route-art .route-comet-glow { fill: none; stroke: var(--accent); stroke-linecap: round; opacity: 0; }
+.route-art .route-comet { stroke-width: 2.25; }
+.route-art .route-comet-glow { stroke-width: 7; }
+.route-art .ripple { fill: none; stroke: var(--accent); stroke-width: 1.5; opacity: 0; }
+.route-art .route-grid { opacity: 0.08; }
 
 /* ---------- Utilidades ---------- */
 .text-accent { color: var(--accent); }

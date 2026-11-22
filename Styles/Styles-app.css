@@ -515,3 +515,7 @@
 @media (max-width: 360px) {
   .stats, [data-role="repartidor"] .stats { grid-template-columns: 1fr; }
 }
+
+/* Tarjeta verde: etiqueta y número centrados */
+.stat-total { align-items: center; justify-content: center; text-align: center; gap: 2px; }
+@media (max-width: 360px) { .stat-total { gap: var(--space-sm); } }

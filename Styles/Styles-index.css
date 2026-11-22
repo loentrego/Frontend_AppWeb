@@ -128,7 +128,3 @@
   .login-hero { min-height: 0; gap: var(--space-md); padding-top: var(--space-lg); }
 }
 
-/* Celulares angostos: pila de cajas más pequeña para no tocar el título */
-@media (max-width: 380px) {
-  .stack-art { top: var(--space-md); bottom: auto; transform: scale(0.55); transform-origin: 100% 0; }
-}

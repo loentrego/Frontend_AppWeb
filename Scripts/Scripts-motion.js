@@ -3,8 +3,9 @@
 //  Requiere, antes de este archivo: libs/gsap/gsap.min.js, ScrollTrigger,
 //  SplitText y DrawSVGPlugin.
 //
-//  Idea: "Cada entrega, en movimiento". En el login, una pila de cajas
-//  (el isotipo): la de arriba sale despachada y una nueva cae a la pila.
+//  Idea: "Cada entrega, en movimiento". En el login, una ruta punteada se
+//  dibuja y un cometa de luz lima la recorre; al llegar al destino, ondas.
+//  La ruta va por la esquina superior derecha: no pasa por encima del texto.
 //  Pensado para uso diario: la entrada completa solo se ve la primera vez
 //  de cada sesión, y los bucles se detienen tras unas pocas repeticiones.
 //  Solo se anima transform y opacity.
@@ -25,10 +26,12 @@
     ease: 'power4.out',   // curva de entrada (power3.out = más suave)
     entrada: 0.85,        // duración de las entradas (s)
     stagger: 0.06,        // separación entre elementos en cascada (s)
-    ciclosPila: 4,        // cuántas cajas se despachan antes de quedarse quieta la pila
-    pausaPila: 2.4,       // pausa entre un despacho y el siguiente (s)
-    vueloCaja: 0.6,       // cuánto tarda la caja en salir volando (s)
-    caidaCaja: 0.8,       // cuánto tarda la caja nueva en caer y rebotar (s)
+    trazoRuta: 1.4,       // cuánto tarda en dibujarse la ruta (s)
+    viajeCometa: 2.4,     // cuánto tarda el cometa en recorrer la ruta (s)
+    largoCometa: 18,      // largo de la estela del cometa (% de la ruta)
+    pausaCometa: 2.6,     // pausa entre un cometa y el siguiente (s)
+    vueltasCometa: 5,     // cuántas veces pasa antes de quedarse quieto
+    ondas: 1.6,           // duración de las ondas al llegar al destino (s)
     saltosCaja: 3,        // saltitos de la caja del encabezado antes de quedarse quieta
     cadaSalto: 8,         // cada cuántos segundos salta (s)
     contadores: 1.1,      // duración de los números que suben (s)
@@ -68,43 +71,53 @@
   document.addEventListener('visibilitychange', () => pausable.forEach((t) => (document.hidden ? t.pause() : t.resume())));
 
   // ------------------------------------------------------------------
-  //  Pila de cajas (login)
+  //  Ruta punteada + cometa de luz (login)
   // ------------------------------------------------------------------
-  function stackIntro(art, tl, at = 0) {
-    if (!art) return;
-    const [b1, b2, b3] = ['.b1', '.b2', '.b3'].map((s) => $(s, art));
-    const shadow = $('.stack-shadow', art);
-    const lines = $$('.speed-line', art);
-    lines.forEach((l, i) => gsap.set(l, { left: 4 + i * 6, top: 6 + i * 11 }));
+  // Fracción de la ruta más cercana a un punto (para sincronizar las ondas)
+  function fractionAt(path, x, y) {
+    const len = path.getTotalLength();
+    let best = 0, bestD = Infinity;
+    for (let i = 0; i <= 200; i++) {
+      const p = path.getPointAtLength((len * i) / 200);
+      const d = (p.x - x) ** 2 + (p.y - y) ** 2;
+      if (d < bestD) { bestD = d; best = i / 200; }
+    }
+    return best;
+  }
 
-    // Entrada: las tres cajas caen una tras otra y rebotan
-    tl.from(shadow, { scaleX: 0.3, autoAlpha: 0, duration: 0.6, ease: 'power2.out' }, at)
-      .from([b1, b2, b3], {
-        y: -260, rotation: (i) => [-10, 14, -18][i], autoAlpha: 0,
-        duration: K.caidaCaja, ease: 'bounce.out', stagger: 0.2,
-      }, at + 0.05);
+  function routeIntro(svg, tl, at = 0) {
+    if (!svg) return;
+    const mask = $('.route-mask', svg);
+    const path = $('.route-line', svg);
+    const grid = $('.route-grid', svg);
+    const dot = $('.route-dot', svg);
+    const halo = $('.route-halo', svg);
+    const comet = $$('.route-comet, .route-comet-glow', svg);
+    const ripples = $$('.ripple', svg);
 
-    // Ciclo: la de arriba se "despacha" y cae una nueva
-    const cycle = gsap.timeline({
-      repeat: K.ciclosPila - 1, repeatDelay: K.pausaPila, delay: at + K.caidaCaja + 1.6,
-    });
-    cycle
-      // se prepara: se agacha un poco
-      .to(b3, { y: 3, scaleY: 0.9, scaleX: 1.06, transformOrigin: '50% 100%', duration: 0.16, ease: 'power2.out' })
-      // ¡despachada! sale volando hacia arriba a la derecha
-      .to(b3, { y: -150, x: 170, rotation: 28, scaleY: 1, scaleX: 1, duration: K.vueloCaja, ease: 'power3.in' })
-      .fromTo(lines, { x: 40, scaleX: 0.2, opacity: 0, transformOrigin: '100% 50%' },
-        { x: 10, scaleX: 1, opacity: 0.9, duration: 0.18, stagger: 0.05, ease: 'power2.out' }, '<0.12')
-      .to(lines, { x: -30, opacity: 0, duration: 0.35, stagger: 0.05, ease: 'power2.in' }, '>-0.05')
-      // la pila "respira" al quedar sin peso
-      .to([b2, b1], { scaleY: 1.04, transformOrigin: '50% 100%', duration: 0.15, yoyo: true, repeat: 1, ease: 'sine.out', stagger: 0.04 }, '<-0.3')
-      // cae una caja nueva desde arriba (la misma, reiniciada)
-      .set(b3, { x: 0, y: -240, rotation: -16 }, '+=0.35')
-      .to(b3, { y: 0, rotation: 0, duration: K.caidaCaja, ease: 'bounce.out' })
-      // golpe: las de abajo se aplastan un instante
-      .to([b2, b1], { scaleY: 0.92, scaleX: 1.04, transformOrigin: '50% 100%', duration: 0.07, yoyo: true, repeat: 1, ease: 'power1.out', stagger: 0.03 }, '<0.28')
-      .to(shadow, { scaleX: 1.12, duration: 0.07, yoyo: true, repeat: 1 }, '<');
-    pausable.push(cycle);
+    if (grid) tl.from(grid, { autoAlpha: 0, duration: 1.2, ease: 'power2.out' }, at);
+    if (mask && window.DrawSVGPlugin) tl.from(mask, { drawSVG: '0%', duration: K.trazoRuta, ease: 'power2.inOut' }, at);
+    if (dot) tl.from([dot, halo], { scale: 0, transformOrigin: '50% 50%', duration: 0.55, ease: 'back.out(3)' }, at + K.trazoRuta * 0.6);
+
+    if (comet.length && path && window.DrawSVGPlugin) {
+      const L = K.largoCometa / 100;
+      const f = dot ? fractionAt(path, +dot.getAttribute('cx'), +dot.getAttribute('cy')) : 0.5;
+      const hit = 0.3 + K.viajeCometa * Math.max(0, f - L) / (1 - L);
+      gsap.set(comet, { drawSVG: '0% 0%' });
+      gsap.set($('.route-comet', svg), { opacity: 1 });
+      gsap.set($('.route-comet-glow', svg), { opacity: 0.2 });
+      const loop = gsap.timeline({ repeat: K.vueltasCometa - 1, repeatDelay: K.pausaCometa, delay: at + K.trazoRuta * 0.9 });
+      loop
+        .fromTo(comet, { drawSVG: '0% 0%' }, { drawSVG: '0% ' + L * 100 + '%', duration: 0.3, ease: 'none' })
+        .to(comet, { drawSVG: (100 - L * 100) + '% 100%', duration: K.viajeCometa, ease: 'none' })
+        .to(comet, { drawSVG: '100% 100%', duration: 0.3, ease: 'none' });
+      if (ripples.length) {
+        loop.fromTo(ripples, { scale: 1, opacity: 0.8, transformOrigin: '50% 50%' },
+          { scale: 5, opacity: 0, duration: K.ondas, ease: 'power2.out', stagger: 0.22 }, hit);
+      }
+      if (dot) loop.fromTo(dot, { scale: 1, transformOrigin: '50% 50%' }, { scale: 1.7, duration: 0.18, ease: 'power2.out', yoyo: true, repeat: 1 }, hit);
+      pausable.push(loop);
+    }
   }
 
   // ------------------------------------------------------------------
@@ -126,7 +139,7 @@
       tl.from(words, { yPercent: 115, duration: 0.7, stagger: 0.04 }, 0)
         .from('.login-panel', { y: 24, autoAlpha: 0, duration: 0.5 }, 0);
     }
-    stackIntro($('.stack-art'), tl, full ? 0.25 : 0);
+    routeIntro($('.login-hero .route-art'), tl, full ? 0.15 : 0);
     return lock(tl);
   }
 
@@ -135,7 +148,7 @@
       gsap.timeline({ defaults: { ease: 'power3.in', duration: K.salida }, onComplete: resolve })
         .to('.login-panel', { yPercent: 12, autoAlpha: 0 }, 0)
         .to(['.login-copy', '.login-logo'], { y: -24, autoAlpha: 0, stagger: 0.05 }, 0.05)
-        .to('.stack-art .stack-box', { y: -220, x: 120, rotation: 30, stagger: 0.06, ease: 'power3.in' }, 0);
+        .to('.login-hero .route-art', { autoAlpha: 0 }, 0);
       setTimeout(resolve, K.salida * 1000 + 400);
     });
   }
