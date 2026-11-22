@@ -117,6 +117,34 @@
     }
   }
 
+  // ---------- Ciudad del fondo: nunca detrás del logo ni del título ----------
+  function fitCity() {
+    const art = document.querySelector('.city-art');
+    const hero = document.querySelector('.login-hero');
+    const logo = document.querySelector('.login-logo');
+    const h1 = document.querySelector('.login-copy h1');
+    if (!art || !hero || !logo || !h1) return;
+    const H = hero.getBoundingClientRect();
+    // Solo los nodos de texto (el título se divide en líneas de ancho completo)
+    const lines = [];
+    const walker = document.createTreeWalker(h1, NodeFilter.SHOW_TEXT);
+    while (walker.nextNode()) {
+      if (!walker.currentNode.textContent.trim()) continue;
+      const r = document.createRange();
+      r.selectNodeContents(walker.currentNode);
+      lines.push(...[...r.getClientRects()].filter((b) => b.width > 0));
+    }
+    if (!lines.length) return;
+    const textRight = Math.max(...lines.map((r) => r.right));
+    const textTop = Math.min(...lines.map((r) => r.top));
+    art.style.setProperty('--cx', Math.round(textRight - H.left + 18) + 'px');
+    art.style.setProperty('--lx', Math.round(logo.getBoundingClientRect().right - H.left + 18) + 'px');
+    art.style.setProperty('--ty', Math.max(0, Math.round(textTop - H.top - 14)) + 'px');
+  }
+  window.addEventListener('resize', fitCity);
+  window.addEventListener('load', fitCity);
+  document.fonts?.ready.then(fitCity);
+
   // ---------- Eventos ----------
   document.addEventListener('DOMContentLoaded', () => {
     ui.form?.addEventListener('submit', (e) => {

@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="Styles/Styles-base.css?v=20261122p">
-<link rel="stylesheet" href="Styles/Styles-index.css?v=20261122p">
+<link rel="stylesheet" href="Styles/Styles-base.css?v=20261122q">
+<link rel="stylesheet" href="Styles/Styles-index.css?v=20261122q">
 <link rel="icon" href="img/icons/icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="LoEntrego">
-<script src="Scripts/Scripts-theme.js?v=20261122p"></script>
+<script src="Scripts/Scripts-theme.js?v=20261122q"></script>
 </head>
 <body>
 
@@ -26,16 +26,11 @@
   <!-- ============ ZONA DE MARCA ============ -->
   <section class="brand-zone login-hero" aria-labelledby="login-title">
     <svg class="city city-art" viewBox="0 0 400 360" preserveAspectRatio="xMaxYMin slice" aria-hidden="true">
-      <defs>
-        <radialGradient id="login-city-fade" gradientUnits="userSpaceOnUse" cx="352" cy="36" r="300">
-          <stop offset="0" stop-color="#fff"/><stop offset="0.3" stop-color="#fff"/><stop offset="0.62" stop-color="#fff" stop-opacity="0"/>
-        </radialGradient>
-        <mask id="login-city-mask" maskUnits="userSpaceOnUse"><rect width="400" height="360" fill="url(#login-city-fade)"/></mask>
-      </defs>
-      <g mask="url(#login-city-mask)">
-        <path class="c-street" d="M40 0V360 M120 0V360 M200 0V360 M280 0V360 M360 0V360 M0 36H400 M0 108H280 M360 108H400 M0 180H400 M0 252H400 M0 324H200 M280 324H400 M0 324 L200 180 L400 16"/>
-        <circle class="c-hub" cx="40" cy="36" r="4" style="--d:0.4s"/><circle class="c-node" cx="40" cy="252" r="2.6"/><circle class="c-node" cx="120" cy="252" r="2.6"/><circle class="c-node" cx="120" cy="324" r="2.6"/><circle class="c-node" cx="200" cy="108" r="2.6"/><circle class="c-node" cx="200" cy="180" r="2.6"/><circle class="c-node" cx="200" cy="252" r="2.6"/><circle class="c-node" cx="200" cy="324" r="2.6"/><circle class="c-node" cx="360" cy="252" r="2.6"/>
-        <path class="c-glow" pathLength="100" d="M0 36H200V252H400" style="--t:6.0s;--w:0.6s"/><path class="c-comet" pathLength="100" d="M0 36H200V252H400" style="--t:6.0s;--w:0.6s"/><path class="c-glow" pathLength="100" d="M360 360V252H40V0" style="--t:7.3s;--w:2.5s"/><path class="c-comet" pathLength="100" d="M360 360V252H40V0" style="--t:7.3s;--w:2.5s"/><path class="c-glow" pathLength="100" d="M0 324 L200 180 L400 16" style="--t:8.6s;--w:4.4s"/><path class="c-comet" pathLength="100" d="M0 324 L200 180 L400 16" style="--t:8.6s;--w:4.4s"/><path class="c-glow" pathLength="100" d="M360 360V108H280V0" style="--t:9.9s;--w:6.3s"/><path class="c-comet" pathLength="100" d="M360 360V108H280V0" style="--t:9.9s;--w:6.3s"/>
+      
+      <g>
+        <path class="c-street" d="M26 0V360 M78 0V360 M130 0V360 M182 0V360 M234 0V360 M286 0V360 M338 0V253 M338 299V360 M390 0V360 M0 23H400 M0 69H234 M286 69H400 M0 115H400 M0 161H338 M390 161H400 M0 207H400 M0 253H400 M0 299H400 M0 345H400 M0 345 L234 207 L400 3"/>
+        <circle class="c-node" cx="26" cy="207" r="2.6"/><circle class="c-node" cx="26" cy="253" r="2.6"/><circle class="c-hub" cx="78" cy="69" r="4" style="--d:2.4s"/><circle class="c-node" cx="78" cy="115" r="2.6"/><circle class="c-node" cx="78" cy="161" r="2.6"/><circle class="c-hub" cx="78" cy="207" r="4" style="--d:0.0s"/><circle class="c-node" cx="78" cy="253" r="2.6"/><circle class="c-node" cx="130" cy="115" r="2.6"/><circle class="c-node" cx="130" cy="161" r="2.6"/><circle class="c-node" cx="130" cy="299" r="2.6"/><circle class="c-node" cx="182" cy="23" r="2.6"/><circle class="c-node" cx="182" cy="69" r="2.6"/><circle class="c-hub" cx="182" cy="115" r="4" style="--d:0.3s"/><circle class="c-node" cx="182" cy="161" r="2.6"/><circle class="c-node" cx="182" cy="253" r="2.6"/><circle class="c-node" cx="182" cy="345" r="2.6"/><circle class="c-node" cx="234" cy="207" r="2.6"/><circle class="c-hub" cx="234" cy="299" r="4" style="--d:1.2s"/><circle class="c-node" cx="234" cy="345" r="2.6"/><circle class="c-node" cx="286" cy="115" r="2.6"/><circle class="c-node" cx="286" cy="207" r="2.6"/><circle class="c-node" cx="338" cy="23" r="2.6"/><circle class="c-node" cx="390" cy="23" r="2.6"/><circle class="c-node" cx="390" cy="253" r="2.6"/><circle class="c-node" cx="390" cy="299" r="2.6"/>
+        <path class="c-glow" pathLength="100" d="M0 69H26V115H400" style="--t:3.6s;--w:0.3s"/><path class="c-comet" pathLength="100" d="M0 69H26V115H400" style="--t:3.6s;--w:0.3s"/><path class="c-glow" pathLength="100" d="M390 360V115H26V0" style="--t:4.5s;--w:1.0s"/><path class="c-comet" pathLength="100" d="M390 360V115H26V0" style="--t:4.5s;--w:1.0s"/><path class="c-glow" pathLength="100" d="M0 345 L234 207 L400 3" style="--t:5.4s;--w:1.7s"/><path class="c-comet" pathLength="100" d="M0 345 L234 207 L400 3" style="--t:5.4s;--w:1.7s"/><path class="c-glow" pathLength="100" d="M234 360V161H78V0" style="--t:3.6s;--w:2.4s"/><path class="c-comet" pathLength="100" d="M234 360V161H78V0" style="--t:3.6s;--w:2.4s"/><path class="c-glow" pathLength="100" d="M0 69H78V115H400" style="--t:4.5s;--w:3.1s"/><path class="c-comet" pathLength="100" d="M0 69H78V115H400" style="--t:4.5s;--w:3.1s"/><path class="c-glow" pathLength="100" d="M26 360V253H286V0" style="--t:5.4s;--w:3.8s"/><path class="c-comet" pathLength="100" d="M26 360V253H286V0" style="--t:5.4s;--w:3.8s"/><path class="c-glow" pathLength="100" d="M0 253H390V69H400" style="--t:3.6s;--w:4.5s"/><path class="c-comet" pathLength="100" d="M0 253H390V69H400" style="--t:3.6s;--w:4.5s"/><path class="c-glow" pathLength="100" d="M130 360V299H338V0" style="--t:4.5s;--w:5.2s"/><path class="c-comet" pathLength="100" d="M130 360V299H338V0" style="--t:4.5s;--w:5.2s"/>
       </g>
     </svg>
 
@@ -88,12 +83,12 @@
 
 </main>
 
-<script src="Scripts/Scripts-index.js?v=20261122p"></script>
+<script src="Scripts/Scripts-index.js?v=20261122q"></script>
 <script src="libs/gsap/gsap.min.js"></script>
 <script src="libs/gsap/ScrollTrigger.min.js"></script>
 <script src="libs/gsap/SplitText.min.js"></script>
 <script src="libs/gsap/DrawSVGPlugin.min.js"></script>
-<script src="Scripts/Scripts-motion.js?v=20261122p"></script>
-<script src="Scripts/Scripts-pwa.js?v=20261122p"></script>
+<script src="Scripts/Scripts-motion.js?v=20261122q"></script>
+<script src="Scripts/Scripts-pwa.js?v=20261122q"></script>
 </body>
 </html>

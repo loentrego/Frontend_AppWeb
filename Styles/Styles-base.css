@@ -208,7 +208,26 @@ body {
   .city .c-comet, .city .c-glow { animation: none; opacity: 0; }
   .city .c-hub { animation: none; }
 }
-.city-art { inset: 0; z-index: -1; width: 100%; height: 100%; --city-loops: 4; }
+.city-art {
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  --city-loops: infinite;
+  --city-street: rgba(255, 255, 255, 0.3);
+  --city-node: rgba(255, 255, 255, 0.55);
+  /* Solo en la zona libre: a la derecha del título (--cx) y, arriba del
+     título (--ty), a la derecha del logo (--lx). Lo mide Scripts-index.js */
+  --cx: 72%; --lx: 46%; --ty: 22%;
+  -webkit-mask-image: linear-gradient(to right, transparent var(--cx), #000 calc(var(--cx) + 28px)), linear-gradient(to right, transparent var(--lx), #000 calc(var(--lx) + 28px));
+          mask-image: linear-gradient(to right, transparent var(--cx), #000 calc(var(--cx) + 28px)), linear-gradient(to right, transparent var(--lx), #000 calc(var(--lx) + 28px));
+  -webkit-mask-size: 100% 100%, 100% var(--ty);
+          mask-size: 100% 100%, 100% var(--ty);
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+}
+.city-art .c-comet { stroke-width: 2.5; }
+.city-art .c-glow { stroke-width: 8; opacity: 0.25; }
 
 /* ---------- Utilidades ---------- */
 .text-accent { color: var(--accent); }

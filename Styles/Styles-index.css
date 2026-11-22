@@ -43,18 +43,6 @@
   padding: var(--space-xl) var(--space-lg) var(--space-md);
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
 }
-.login-panel::before {
-  /* Pestaña lima: el "punto de entrega" de la ruta */
-  content: '';
-  position: absolute;
-  top: 12px;
-  left: 50%;
-  width: 36px;
-  height: 4px;
-  translate: -50% 0;
-  border-radius: 4px;
-  background: var(--accent);
-}
 
 .login-panel-head h2 {
   font-family: var(--font-display);
