@@ -35,17 +35,7 @@
 }
 .app-header-brand { display: flex; align-items: center; gap: var(--space-sm); min-width: 0; }
 
-.brand-mark {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: 42px;
-  height: 42px;
-  border-radius: 13px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-}
-.brand-mark img { width: 22px; height: 22px; object-fit: contain; }
+.brand-mark { width: 34px; }
 
 .eyebrow {
   font-size: var(--fs-2xs);
@@ -307,7 +297,7 @@
   text-align: center;
 }
 .empty-state[hidden] { display: none; }
-.empty-state img { width: 48px; margin-bottom: var(--space-sm); border-radius: 12px; }
+.isotipo-empty { width: 44px; margin-bottom: var(--space-sm); opacity: 0.85; }
 .empty-title { font-family: var(--font-display); font-weight: 600; }
 .empty-sub { font-size: var(--fs-sm); color: var(--text-secondary); margin-top: 2px; }
 
@@ -538,3 +528,10 @@
 .app-panel { padding-left: max(var(--space-md), calc((100% - 540px) / 2)); padding-right: max(var(--space-md), calc((100% - 540px) / 2)); }
 .stat-split .stat { padding-left: var(--space-sm); padding-right: var(--space-xs); min-width: 0; }
 .stat-split .stat-label { white-space: normal; line-height: 1.25; }
+
+/* Vidrio esmerilado: la ruta y el cometa pasan por debajo, difuminados */
+.stat-split {
+  background: rgba(255, 255, 255, 0.10);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+          backdrop-filter: blur(10px) saturate(140%);
+}

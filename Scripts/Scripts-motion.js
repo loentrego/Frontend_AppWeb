@@ -27,8 +27,11 @@
     entrada: 0.85,            // duración de las entradas (s)
     stagger: 0.06,            // separación entre elementos en cascada (s)
     trazoRuta: 1.5,           // cuánto tarda en dibujarse la ruta (s)
-    vueltaPaquete: 6.5,       // cuánto tarda el paquete en recorrer la ruta (s)
-    pausaPaquete: 1.4,        // pausa entre recorridos (s)
+    viajeCometa: 2.8,         // cuánto tarda el cometa de luz en recorrer la ruta (s)
+    largoCometa: 16,          // largo de la estela del cometa (% de la ruta)
+    pausaCometa: 2.2,         // pausa entre un cometa y el siguiente (s)
+    ondas: 1.6,               // duración de las ondas al llegar al destino (s)
+    saltoCaja: 7,             // cada cuántos segundos "salta" la caja del encabezado
     contadores: 1.2,          // duración de los números que suben (s)
     llenadoRuta: 1.1,         // duración del llenado de las mini-rutas (s)
     salida: 0.55,             // transición al salir del login (s)
@@ -54,13 +57,33 @@
   // ------------------------------------------------------------------
   //  Ruta: se dibuja y el paquete la recorre en bucle
   // ------------------------------------------------------------------
+  // Qué fracción de la ruta está más cerca de un punto (para sincronizar las ondas)
+  function fractionAt(path, x, y) {
+    const len = path.getTotalLength();
+    let best = 0, bestD = Infinity;
+    for (let i = 0; i <= 200; i++) {
+      const p = path.getPointAtLength((len * i) / 200);
+      const d = (p.x - x) ** 2 + (p.y - y) ** 2;
+      if (d < bestD) { bestD = d; best = i / 200; }
+    }
+    return best;
+  }
+
   function routeIntro(svg, tl, at = 0) {
     if (!svg) return;
     const mask = $('.route-mask', svg);
     const path = $('.route-line', svg);
     const pins = $$('.route-stop, .route-dot', svg);
-    const courier = $('.route-courier', svg);
+    const grid = $('.route-grid', svg);
+    const comet = $$('.route-comet, .route-comet-glow', svg);
+    const ripples = $$('.ripple', svg);
+    const dot = $('.route-dot', svg);
 
+    // Cuadrícula de "mapa": aparece y deriva muy despacio
+    if (grid) {
+      tl.from(grid, { autoAlpha: 0, duration: 1.4, ease: 'power2.out' }, at);
+      gsap.to($('rect', grid), { x: 22, y: -22, duration: 18, ease: 'none', repeat: -1 });
+    }
     if (mask && window.DrawSVGPlugin) {
       tl.from(mask, { drawSVG: '0%', duration: K.trazoRuta, ease: 'power2.inOut' }, at);
     }
@@ -71,25 +94,45 @@
       }, at + K.trazoRuta * 0.55);
     }
 
-    if (courier && path && window.MotionPathPlugin) {
-      const loop = gsap.timeline({ repeat: -1, repeatDelay: K.pausaPaquete, delay: at + K.trazoRuta * 0.8, paused: false });
+    // Cometa de luz: un tramo lima recorre la línea y, al pasar por el
+    // destino, el punto late y suelta ondas expansivas.
+    if (comet.length && path && window.DrawSVGPlugin) {
+      const L = K.largoCometa / 100;
+      const f = dot ? fractionAt(path, +dot.getAttribute('cx'), +dot.getAttribute('cy')) : 0.7;
+      const hit = 0.35 + K.viajeCometa * Math.max(0, f - L) / (1 - L); // segundo en que la cabeza llega al destino
+
+      gsap.set(comet, { drawSVG: '0% 0%' });
+      gsap.set($('.route-comet', svg), { opacity: 1 });
+      gsap.set($('.route-comet-glow', svg), { opacity: 0.2 });   // halo tenue (perilla)
+      const loop = gsap.timeline({ repeat: -1, repeatDelay: K.pausaCometa, delay: at + K.trazoRuta * 0.85 });
       loop
-        .set(courier, { opacity: 0 })
-        .to(courier, { opacity: 1, duration: 0.35 }, 0)
-        .to(courier, {
-          motionPath: { path, align: path, alignOrigin: [0.5, 0.5], autoRotate: false },
-          duration: K.vueltaPaquete,
-          ease: 'power1.inOut',
-        }, 0)
-        // pequeño "rebote" del paquete mientras viaja
-        .to($('.courier-box', courier), {
-          rotation: 12, transformOrigin: '50% 50%', duration: 0.5, ease: 'sine.inOut', yoyo: true, repeat: Math.round(K.vueltaPaquete / 0.5) - 1,
-        }, 0)
-        .to(courier, { opacity: 0, duration: 0.35 }, K.vueltaPaquete - 0.35);
+        .fromTo(comet, { drawSVG: '0% 0%' }, { drawSVG: '0% ' + (L * 100) + '%', duration: 0.35, ease: 'none' })
+        .to(comet, { drawSVG: (100 - L * 100) + '% 100%', duration: K.viajeCometa, ease: 'none' })
+        .to(comet, { drawSVG: '100% 100%', duration: 0.35, ease: 'none' });
+
+      if (ripples.length) {
+        loop.fromTo(ripples,
+          { scale: 1, opacity: 0.8, transformOrigin: '50% 50%' },
+          { scale: 6, opacity: 0, duration: K.ondas, ease: 'power2.out', stagger: 0.22 }, hit);
+      }
+      if (dot) {
+        loop.fromTo(dot, { scale: 1, transformOrigin: '50% 50%' },
+          { scale: 1.7, duration: 0.18, ease: 'power2.out', yoyo: true, repeat: 1 }, hit);
+      }
 
       // No gastar batería si la pestaña no está visible
       document.addEventListener('visibilitychange', () => (document.hidden ? loop.pause() : loop.resume()));
     }
+  }
+
+  // Caja del encabezado: un saltito con "aplaste" al caer
+  function boxHop(el) {
+    if (!el) return;
+    return gsap.timeline()
+      .to(el, { y: -9, scaleY: 1.06, scaleX: 0.95, duration: 0.22, ease: 'power2.out', transformOrigin: '50% 100%' })
+      .to(el, { y: 0, scaleY: 1, scaleX: 1, duration: 0.5, ease: 'bounce.out' })
+      .to(el, { scaleY: 0.9, scaleX: 1.08, duration: 0.08, ease: 'power1.out' }, '-=0.42')
+      .to(el, { scaleY: 1, scaleX: 1, duration: 0.25, ease: 'back.out(3)' }, '-=0.34');
   }
 
   // ------------------------------------------------------------------
@@ -158,7 +201,7 @@
   function appIntro() {
     const tl = gsap.timeline({ defaults: { ease: K.ease, duration: K.entrada } });
 
-    tl.from('.app-header .brand-mark', { scale: 0.6, rotation: -12, autoAlpha: 0, duration: 0.7, ease: 'back.out(2.2)' }, 0)
+    tl.from('.app-header .brand-mark', { y: -46, rotation: -18, autoAlpha: 0, duration: 1, ease: 'bounce.out', transformOrigin: '50% 100%' }, 0)
       .from(['.app-header .eyebrow', '.app-header .app-title'], { y: 12, autoAlpha: 0, stagger: 0.06 }, 0.08)
       .from('.avatar-btn', { scale: 0, autoAlpha: 0, duration: 0.6, ease: 'back.out(2.5)' }, 0.2)
       .from(['.stat-total', '.stat-split'], { y: 28, scale: 0.96, autoAlpha: 0, stagger: 0.1 }, 0.2)
@@ -168,6 +211,10 @@
 
     routeIntro($('.app-hero .route-art'), tl, 0.15);
     lock(tl);
+    // Saltito periódico de la caja (se pausa con la pestaña oculta)
+    const mark = $('.app-header .brand-mark');
+    const hop = gsap.delayedCall(K.saltoCaja, () => { boxHop(mark); hop.restart(true); });
+    document.addEventListener('visibilitychange', () => (document.hidden ? hop.pause() : hop.resume()));
     countUp($$('.stats [data-stat]'));
 
     // Pedidos: los visibles entran ya; los de abajo, al hacer scroll
@@ -205,6 +252,7 @@
       { y: -18, scale: 0.96, autoAlpha: 0 },
       { y: 0, scale: 1, autoAlpha: 1, duration: 0.8, ease: 'back.out(1.8)', clearProps: 'transform' });
     gsap.from($('.track-fill', item), { scaleX: 0, transformOrigin: 'left center', duration: K.llenadoRuta, ease: 'power3.inOut', delay: 0.25 });
+    boxHop($('.app-header .brand-mark'));
     gsap.fromTo('.stat-total', { scale: 1.07 }, { scale: 1, duration: 0.9, ease: 'elastic.out(1, 0.45)' });
     gsap.fromTo('.stat-total .stat-value', { yPercent: -30, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.5, ease: 'power3.out' });
   }

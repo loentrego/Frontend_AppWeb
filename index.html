@@ -8,16 +8,16 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="Styles/Styles-base.css?v=20261122h">
-<link rel="stylesheet" href="Styles/Styles-index.css?v=20261122h">
-<link rel="icon" href="img/Minilogo-transparencia.png">
+<link rel="stylesheet" href="Styles/Styles-base.css?v=20261122i">
+<link rel="stylesheet" href="Styles/Styles-index.css?v=20261122i">
+<link rel="icon" href="img/icons/icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="LoEntrego">
-<script src="Scripts/Scripts-theme.js?v=20261122h"></script>
+<script src="Scripts/Scripts-theme.js?v=20261122i"></script>
 </head>
 <body>
 
@@ -27,18 +27,30 @@
   <section class="brand-zone login-hero" aria-labelledby="login-title">
     <svg class="route-art" viewBox="0 0 390 380" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <defs>
+        <pattern id="login-route-grid" width="22" height="22" patternUnits="userSpaceOnUse">
+          <circle cx="11" cy="11" r="1.1" fill="#fff"/>
+        </pattern>
+        <radialGradient id="login-route-fade" cx="75%" cy="45%" r="70%">
+          <stop offset="0" stop-color="#fff" stop-opacity="1"/>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        </radialGradient>
+        <mask id="login-route-gridmask" maskUnits="userSpaceOnUse"><rect width="390" height="380" fill="url(#login-route-fade)"/></mask>
         <mask id="login-route-reveal" maskUnits="userSpaceOnUse">
           <path class="route-mask" d="M-10 330 C 70 330, 90 250, 170 250 S 270 300, 300 210 S 330 90, 410 70" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round"/>
         </mask>
       </defs>
+      <g class="route-grid" mask="url(#login-route-gridmask)"><rect x="-22" y="-22" width="434" height="424" fill="url(#login-route-grid)"/></g>
       <path id="login-route-path" class="route-line" d="M-10 330 C 70 330, 90 250, 170 250 S 270 300, 300 210 S 330 90, 410 70" mask="url(#login-route-reveal)"/>
+      <path class="route-comet-glow" d="M-10 330 C 70 330, 90 250, 170 250 S 270 300, 300 210 S 330 90, 410 70"/>
+      <path class="route-comet" d="M-10 330 C 70 330, 90 250, 170 250 S 270 300, 300 210 S 330 90, 410 70"/>
       <circle class="route-stop" cx="170" cy="250" r="6"/>
+      <g class="route-ripples">
+        <circle class="ripple" cx="300" cy="210" r="6"/>
+        <circle class="ripple" cx="300" cy="210" r="6"/>
+        <circle class="ripple" cx="300" cy="210" r="6"/>
+      </g>
       <circle class="route-halo" cx="300" cy="210" r="14"/>
       <circle class="route-dot" cx="300" cy="210" r="6"/>
-      <g class="route-courier">
-        <circle class="courier-glow" r="11"/>
-        <rect class="courier-box" x="-5" y="-5" width="10" height="10" rx="2.5"/>
-      </g>
     </svg>
 
     <img class="login-logo" src="img/LoEntrego2026-wordmark.png" alt="LoEntrego — Logística de última milla" width="1383" height="374">
@@ -83,20 +95,20 @@
     </form>
 
     <footer class="login-foot">
-      <img src="img/Minilogo-loentrego-2026.png" alt="" aria-hidden="true">
+      <span class="isotipo isotipo-xs" aria-hidden="true"></span>
       <span>© 2026 LoEntrego · Bogotá, Colombia</span>
     </footer>
   </section>
 
 </main>
 
-<script src="Scripts/Scripts-index.js?v=20261122h"></script>
+<script src="Scripts/Scripts-index.js?v=20261122i"></script>
 <script src="libs/gsap/gsap.min.js"></script>
 <script src="libs/gsap/ScrollTrigger.min.js"></script>
 <script src="libs/gsap/SplitText.min.js"></script>
 <script src="libs/gsap/DrawSVGPlugin.min.js"></script>
 <script src="libs/gsap/MotionPathPlugin.min.js"></script>
-<script src="Scripts/Scripts-motion.js?v=20261122h"></script>
-<script src="Scripts/Scripts-pwa.js?v=20261122h"></script>
+<script src="Scripts/Scripts-motion.js?v=20261122i"></script>
+<script src="Scripts/Scripts-pwa.js?v=20261122i"></script>
 </body>
 </html>

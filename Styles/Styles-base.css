@@ -367,8 +367,26 @@ textarea.field-input { padding: var(--space-sm) var(--space-md); min-height: 84p
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 
-/* Paquete que recorre la ruta (lo mueve Scripts-motion.js) */
-.route-art .route-courier { opacity: 0; }
-.route-art .courier-glow { fill: var(--accent); opacity: 0.22; }
-.route-art .courier-box { fill: var(--accent); stroke: var(--brand-lima-ink); stroke-width: 1.5; }
+/* Cometa de luz que recorre la ruta y ondas al llegar (Scripts-motion.js) */
+.route-art .route-comet,
+.route-art .route-comet-glow { fill: none; stroke: var(--accent); stroke-linecap: round; opacity: 0; }
+.route-art .route-comet { stroke-width: 2.25; }
+.route-art .route-comet-glow { stroke-width: 7; }
+.route-art .ripple { fill: none; stroke: var(--accent); stroke-width: 1.5; opacity: 0; }
+.route-art .route-grid { opacity: 0.09; }
+
+/* ---------- Isotipo (la caja): sin fondo, toma el color del tema ---------- */
+:root { --isotipo-color: #12092E; }                 /* sobre claro: versión negra */
+:root[data-theme="dark"] { --isotipo-color: #FFFFFF; } /* sobre oscuro: versión blanca */
+.brand-zone { --isotipo-color: #FFFFFF; }           /* la franja azul siempre lleva blanco */
+.isotipo {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 28px;
+  aspect-ratio: 553 / 544;
+  background-color: var(--isotipo-color);
+  -webkit-mask: url("../img/isotipo.png") center / contain no-repeat;
+          mask: url("../img/isotipo.png") center / contain no-repeat;
+}
+.isotipo-xs { width: 16px; }
 .is-animating *, .is-animating *::before, .is-animating *::after { transition: none !important; }
