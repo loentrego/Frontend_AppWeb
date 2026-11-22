@@ -20,12 +20,12 @@
 
   /* ---- Semánticos AppWeb (tema "día") ---- */
   --bg-brand: var(--brand-azul);
-  --bg-page: #F3F2FA;
-  --bg-surface: #FFFFFF;
-  --bg-subtle: #F7F6FD;
-  --bg-input: #F7F6FD;
-  --border-subtle: #E6E3F4;
-  --border-strong: #CFCAEB;
+  --bg-page: #ECE9F8;
+  --bg-surface: #F7F5FD;
+  --bg-subtle: #EFECF9;
+  --bg-input: #FCFBFF;
+  --border-subtle: #DFDAF1;
+  --border-strong: #C8C2E6;
   --text-primary: #17104A;
   --text-secondary: #5D5889;
   --text-placeholder: #9C97BF;
