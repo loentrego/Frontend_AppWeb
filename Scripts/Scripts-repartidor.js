@@ -60,9 +60,6 @@
     };
     $$('[data-stat]').forEach((el) => { el.textContent = v[el.dataset.stat] ?? 0; });
     $$('[data-money]').forEach((el) => { el.textContent = money(v[el.dataset.money]); });
-    $('#day-bar').innerHTML = ordenar(all).reverse()
-      .sort((a, b) => FINALES.includes(b.estado) - FINALES.includes(a.estado))
-      .map((o) => `<i data-tono="${ESTADOS[o.estado].tono}"></i>`).join('');
   }
 
   // ---------- Lista de pedidos ----------

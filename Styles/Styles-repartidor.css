@@ -10,11 +10,6 @@
 [data-role="repartidor"] .stats { grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.6fr); }
 
 /* Barra del día: un segmento por pedido */
-.day-bar { display: flex; gap: 4px; margin-top: var(--space-sm); }
-.day-bar i { flex: 1; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.18); }
-.day-bar i[data-tono="ok"]   { background: var(--accent); }
-.day-bar i[data-tono="fail"] { background: #FF8C99; }
-.day-bar i[data-tono="move"] { background: #8FD3FF; }
 
 /* ============ MIS PEDIDOS ============ */
 .jobs { display: flex; flex-direction: column; gap: var(--space-sm); }
