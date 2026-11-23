@@ -111,6 +111,12 @@
   padding-right: max(var(--space-lg), calc((100% - 440px) / 2));
 }
 
+/* En el celular el contenedor no tiene alto fijo y el 42 % no aplica: se usa el alto de la pantalla,
+   así la franja azul queda con la misma proporción que en el marco de escritorio */
+@media not ((min-width: 560px) and (min-height: 700px)) {
+  .login-hero { min-height: min(42dvh, calc(100dvh - 400px)); }
+}
+
 /* Pantallas muy bajitas (celular horizontal): franja más compacta */
 @media (max-height: 520px) {
   .login-hero { min-height: 0; gap: var(--space-md); padding-top: var(--space-lg); }
