@@ -57,17 +57,17 @@
   // ---------- Datos de prueba (compartidos entre roles) ----------
   const KEY = 'loentrego-demo-v2';
   const SEED = [
-    { id: 'p1', codigo: 'LE-1041', nombre: 'Marcela Ortiz', direccion: 'Calle 116 #19-40, apto 302', zona: 'bogota', telefono: '3127890123', cobro: 32000, notas: 'Dejar con el celador', estado: 'entregado',
+    { id: 'p1', codigo: 'LOE-0001041', nombre: 'Marcela Ortiz', direccion: 'Calle 116 #19-40, apto 302', zona: 'bogota', telefono: '3127890123', cobro: 32000, notas: 'Dejar con el celador', estado: 'entregado',
       historial: [['por_recoger', '08:05'], ['recogido', '08:40'], ['en_camino', '08:52'], ['entregado', '09:31']] },
-    { id: 'p2', codigo: 'LE-1042', nombre: 'Andrea Gómez', direccion: 'Calle 72 #10-34', zona: 'bogota', telefono: '3001234567', cobro: 45000, notas: 'Entregar en portería, preguntar por Sr. Gómez', estado: 'en_camino',
+    { id: 'p2', codigo: 'LOE-0001042', nombre: 'Andrea Gómez', direccion: 'Calle 72 #10-34', zona: 'bogota', telefono: '3001234567', cobro: 45000, notas: 'Entregar en portería, preguntar por Sr. Gómez', estado: 'en_camino',
       historial: [['por_recoger', '08:12'], ['recogido', '08:40'], ['en_camino', '09:40']] },
-    { id: 'p3', codigo: 'LE-1043', nombre: 'Julián Ríos', direccion: 'Carrera 15 #8-21, casa 4', zona: 'funza', telefono: '3154567890', cobro: 28000, notas: 'Tocar el timbre de la reja verde', estado: 'recogido',
+    { id: 'p3', codigo: 'LOE-0001043', nombre: 'Julián Ríos', direccion: 'Carrera 15 #8-21, casa 4', zona: 'funza', telefono: '3154567890', cobro: 28000, notas: 'Tocar el timbre de la reja verde', estado: 'recogido',
       historial: [['por_recoger', '08:20'], ['recogido', '08:41']] },
-    { id: 'p4', codigo: 'LE-1044', nombre: 'Sofía Herrera', direccion: 'Calle 13 #7-45', zona: 'soacha', telefono: '3205558877', cobro: 0, notas: '', estado: 'por_recoger',
+    { id: 'p4', codigo: 'LOE-0001044', nombre: 'Sofía Herrera', direccion: 'Calle 13 #7-45', zona: 'soacha', telefono: '3205558877', cobro: 0, notas: '', estado: 'por_recoger',
       historial: [['por_recoger', '09:05']] },
-    { id: 'p5', codigo: 'LE-1045', nombre: 'Daniel Castro', direccion: 'Av. Boyacá #63-20', zona: 'bogota', telefono: '3112223344', cobro: 61500, notas: 'Llamar antes de llegar', estado: 'por_recoger',
+    { id: 'p5', codigo: 'LOE-0001045', nombre: 'Daniel Castro', direccion: 'Av. Boyacá #63-20', zona: 'bogota', telefono: '3112223344', cobro: 61500, notas: 'Llamar antes de llegar', estado: 'por_recoger',
       historial: [['por_recoger', '09:18']] },
-    { id: 'p6', codigo: 'LE-1040', nombre: 'Paula Medina', direccion: 'Calle 45 #22-10', zona: 'bogota', telefono: '3019876543', cobro: 19900, notas: '', estado: 'no_entregado', motivo: 'no_contesta',
+    { id: 'p6', codigo: 'LOE-0001040', nombre: 'Paula Medina', direccion: 'Calle 45 #22-10', zona: 'bogota', telefono: '3019876543', cobro: 19900, notas: '', estado: 'no_entregado', motivo: 'no_contesta',
       historial: [['por_recoger', '07:50'], ['recogido', '08:10'], ['en_camino', '08:15'], ['no_entregado', '08:48']] },
   ];
 
@@ -87,7 +87,7 @@
     add(order) {
       const list = this.all();
       const n = Math.max(1039, ...list.map((o) => parseInt(String(o.codigo).split('-')[1], 10) || 0)) + 1;
-      const full = { id: 'p' + Date.now(), codigo: 'LE-' + n, estado: 'por_recoger', historial: [['por_recoger', now()]], ...order };
+      const full = { id: 'p' + Date.now(), codigo: 'LOE-' + String(n).padStart(7, '0'), estado: 'por_recoger', historial: [['por_recoger', now()]], ...order };
       list.unshift(full);
       this.save(list);
       return full;
