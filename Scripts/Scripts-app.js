@@ -71,11 +71,18 @@
       historial: [['por_recoger', '07:50'], ['recogido', '08:10'], ['en_camino', '08:15'], ['no_entregado', '08:48']] },
   ];
 
+  // Pedidos guardados con el formato viejo (LE-1042) pasan a 3 letras + 7 números (LOE-0001042)
+  const migrarCodigo = (o) => (o && /^LE-\d+$/.test(o.codigo) ? { ...o, codigo: 'LOE-' + o.codigo.slice(3).padStart(7, '0') } : o);
+
   const store = {
     all() {
       try {
         const raw = localStorage.getItem(KEY);
-        if (raw) return JSON.parse(raw);
+        if (raw) {
+          const list = JSON.parse(raw);
+          if (Array.isArray(list) && list.some((o) => /^LE-\d+$/.test(o?.codigo))) { const m = list.map(migrarCodigo); localStorage.setItem(KEY, JSON.stringify(m)); return m; }
+          return list;
+        }
       } catch { /* sin almacenamiento */ }
       return structuredClone(SEED);
     },
