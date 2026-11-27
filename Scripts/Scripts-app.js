@@ -52,7 +52,6 @@
   const escapeHTML = (str) => String(str ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const now = () => new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', hour12: false });
   const mapsUrl = (o) => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(`${o.direccion}, ${ZONAS[o.zona]?.nombre || ''}, Colombia`);
-  const waUrl = (tel) => 'https://wa.me/57' + digits(tel);
 
   // ---------- Datos de prueba (compartidos entre roles) ----------
   const KEY = 'loentrego-demo-v2';
@@ -236,7 +235,7 @@
 
   window.LE = {
     $, $$, ZONAS, ESTADOS, FLUJO, FINALES, MOTIVOS,
-    money, parseMoney, digits, formatPhone, isPhoneCO, initials, escapeHTML, now, mapsUrl, waUrl,
+    money, parseMoney, digits, formatPhone, isPhoneCO, initials, escapeHTML, now, mapsUrl,
     store, statusPill, trackHTML, timelineHTML, toast, openSheet, closeSheet, closeAllSheets, on,
   };
 })();
